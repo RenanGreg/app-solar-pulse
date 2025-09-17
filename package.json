@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-native-gesture-handler": "^2.28.0",
+    "react-native-reanimated": "^4.1.0",
+    "react-native-snap-carousel": "^3.9.1"
+  }
+}
