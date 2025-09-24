@@ -1,9 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { GestureDetector, Gesture } from 'react-native-gesture-handler';
-
-const { width } = Dimensions.get('window');
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Animated, PanResponder } from 'react-native';
 
 type ProductCardProps = {
   title: string;
@@ -13,47 +9,67 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ title, price, image, category }: ProductCardProps) {
-  const scale = useSharedValue(1);
-  const savedScale = useSharedValue(1);
+  const pan = useRef(new Animated.ValueXY()).current;
+  const scale = useRef(new Animated.Value(1)).current;
 
-  const gesture = Gesture.Pan()
-    .onBegin(() => {
-      scale.value = withSpring(1.05);
-    })
-    .onFinalize(() => {
-      scale.value = withSpring(1);
-    });
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderGrant: () => {
+      Animated.spring(scale, {
+        toValue: 0.95,
+        useNativeDriver: true,
+      }).start();
+    },
+    onPanResponderMove: Animated.event(
+      [null, { dx: pan.x, dy: pan.y }],
+      { useNativeDriver: false }
+    ),
+    onPanResponderRelease: () => {
+      Animated.parallel([
+        Animated.spring(pan, {
+          toValue: { x: 0, y: 0 },
+          useNativeDriver: false,
+        }),
+        Animated.spring(scale, {
+          toValue: 1,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    },
+  });
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
+  const animatedStyle = {
+    transform: [
+      { translateX: pan.x },
+      { translateY: pan.y },
+      { scale },
+    ],
+  };
 
   return (
-    <GestureDetector gesture={gesture}>
-      <Animated.View style={[styles.container, animatedStyle]}>
-        <View style={styles.imageContainer}>
-          <Image 
-            source={{ uri: image }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-          <View style={styles.categoryTag}>
-            <Text style={styles.categoryText}>{category}</Text>
-          </View>
-        </View>
-        
-        <View style={styles.content}>
-          <Text style={styles.title} numberOfLines={2}>{title}</Text>
-          <Text style={styles.price}>R$ {price.toLocaleString()}</Text>
-          
-          <TouchableOpacity style={styles.button} activeOpacity={0.8}>
-            <Text style={styles.buttonText}>Add to Cart</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.gradient} />
-      </Animated.View>
-    </GestureDetector>
+    <Animated.View
+      style={[styles.container, animatedStyle]}
+      {...panResponder.panHandlers}
+    >
+      <Image
+        source={{ uri: image }}
+        style={styles.image}
+        resizeMode="cover"
+      />
+      <View style={styles.content}>
+        <Text style={styles.category}>{category}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.price}>
+          {new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          }).format(price)}
+        </Text>
+        <TouchableOpacity style={styles.button} activeOpacity={0.8}>
+          <Text style={styles.buttonText}>Learn More →</Text>
+        </TouchableOpacity>
+      </View>
+    </Animated.View>
   );
 }
 
@@ -70,76 +86,43 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 20,
     elevation: 8,
-    width: width * 0.8,
-    maxWidth: 400,
-  },
-  imageContainer: {
-    width: '100%',
-    height: 250,
-    backgroundColor: '#f5f5f5',
-    position: 'relative',
+    width: 280,
   },
   image: {
     width: '100%',
-    height: '100%',
-  },
-  categoryTag: {
-    position: 'absolute',
-    top: 16,
-    left: 16,
-    backgroundColor: 'rgba(255, 69, 0, 0.9)',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-  },
-  categoryText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
+    height: 200,
+    backgroundColor: '#f0f0f0',
   },
   content: {
     padding: 20,
-    gap: 12,
+    gap: 8,
+  },
+  category: {
+    color: '#FF4500',
+    fontSize: 14,
+    fontWeight: '500',
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#000',
-    lineHeight: 24,
   },
   price: {
     fontSize: 24,
-    color: '#FF4500',
     fontWeight: 'bold',
+    color: '#000',
   },
   button: {
-    backgroundColor: '#000',
-    padding: 16,
+    backgroundColor: '#FF4500',
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     borderRadius: 25,
     alignItems: 'center',
-    marginTop: 8,
+    marginTop: 12,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  gradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 100,
-    backgroundColor: 'transparent',
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -8,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 4,
   },
 });

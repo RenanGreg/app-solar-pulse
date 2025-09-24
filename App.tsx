@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Header } from './src/components/Header';
 import { Banner } from './src/components/Banner';
 import { FeaturedCarousel } from './src/components/FeaturedCarousel';
@@ -45,7 +44,7 @@ export default function App() {
   }, []);
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar style="light" />
       <Header />
       
@@ -61,7 +60,7 @@ export default function App() {
           <FeaturedCarousel products={products} />
         )}
       </ParallaxScrollView>
-    </GestureHandlerRootView>
+    </View>
   );
 }
 

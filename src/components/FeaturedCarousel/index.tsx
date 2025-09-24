@@ -1,9 +1,6 @@
 import React from 'react';
-import { View, Dimensions, StyleSheet } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { ProductCard } from '../ProductCard';
-
-const { width: screenWidth } = Dimensions.get('window');
 
 type Product = {
   id: number;
@@ -18,31 +15,22 @@ type FeaturedCarouselProps = {
 };
 
 export function FeaturedCarousel({ products }: FeaturedCarouselProps) {
-  const renderItem = ({ item }: { item: Product }) => (
-    <View style={styles.carouselItem}>
-      <ProductCard
-        title={item.title}
-        price={item.price}
-        image={item.image}
-        category={item.category}
-      />
-    </View>
-  );
-
   return (
     <View style={styles.container}>
-      <Carousel
-        data={products}
-        renderItem={renderItem}
-        sliderWidth={screenWidth}
-        itemWidth={screenWidth * 0.8}
-        layout="default"
-        loop
-        autoplay
-        autoplayInterval={3000}
-        enableMomentum={false}
-        lockScrollWhileSnapping
-      />
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.content}
+        decelerationRate="fast"
+        snapToInterval={300}
+        snapToAlignment="center"
+      >
+        {products.map((product) => (
+          <View key={product.id} style={styles.cardContainer}>
+            <ProductCard {...product} />
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -51,7 +39,11 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
   },
-  carouselItem: {
-    padding: 10,
+  content: {
+    paddingHorizontal: 20,
+    gap: 20,
+  },
+  cardContainer: {
+    marginRight: 20,
   },
 });

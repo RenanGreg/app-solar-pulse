@@ -1,55 +1,91 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring, withTiming, withDelay } from 'react-native-reanimated';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Animated } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
 export function Banner() {
-  const titleOpacity = useSharedValue(0);
-  const titleTranslateY = useSharedValue(50);
-  const subtitleOpacity = useSharedValue(0);
-  const subtitleTranslateY = useSharedValue(30);
-  const buttonScale = useSharedValue(0.8);
-  const buttonOpacity = useSharedValue(0);
+  const titleOpacity = useRef(new Animated.Value(0)).current;
+  const titleTranslateY = useRef(new Animated.Value(50)).current;
+  const subtitleOpacity = useRef(new Animated.Value(0)).current;
+  const subtitleTranslateY = useRef(new Animated.Value(30)).current;
+  const buttonScale = useRef(new Animated.Value(0.8)).current;
+  const buttonOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    titleOpacity.value = withDelay(300, withTiming(1, { duration: 1000 }));
-    titleTranslateY.value = withDelay(300, withSpring(0));
-    subtitleOpacity.value = withDelay(600, withTiming(1, { duration: 1000 }));
-    subtitleTranslateY.value = withDelay(600, withSpring(0));
-    buttonScale.value = withDelay(900, withSpring(1));
-    buttonOpacity.value = withDelay(900, withTiming(1, { duration: 800 }));
+    Animated.sequence([
+      Animated.parallel([
+        Animated.timing(titleOpacity, {
+          toValue: 1,
+          duration: 1000,
+          delay: 300,
+          useNativeDriver: true,
+        }),
+        Animated.spring(titleTranslateY, {
+          toValue: 0,
+          delay: 300,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.parallel([
+        Animated.timing(subtitleOpacity, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.spring(subtitleTranslateY, {
+          toValue: 0,
+          useNativeDriver: true,
+        }),
+      ]),
+      Animated.parallel([
+        Animated.spring(buttonScale, {
+          toValue: 1,
+          useNativeDriver: true,
+        }),
+        Animated.timing(buttonOpacity, {
+          toValue: 1,
+          duration: 800,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
   }, []);
-
-  const titleStyle = useAnimatedStyle(() => ({
-    opacity: titleOpacity.value,
-    transform: [{ translateY: titleTranslateY.value }],
-  }));
-
-  const subtitleStyle = useAnimatedStyle(() => ({
-    opacity: subtitleOpacity.value,
-    transform: [{ translateY: subtitleTranslateY.value }],
-  }));
-
-  const buttonStyle = useAnimatedStyle(() => ({
-    opacity: buttonOpacity.value,
-    transform: [{ scale: buttonScale.value }],
-  }));
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.tag}>Purpose</Text>
         
-        <Animated.Text style={[styles.title, titleStyle]}>
+        <Animated.Text
+          style={[
+            styles.title,
+            {
+              opacity: titleOpacity,
+              transform: [{ translateY: titleTranslateY }],
+            },
+          ]}
+        >
           Atlas: Where Code{"\n"}Meets Motion
         </Animated.Text>
 
-        <Animated.Text style={[styles.subtitle, subtitleStyle]}>
+        <Animated.Text
+          style={[
+            styles.subtitle,
+            {
+              opacity: subtitleOpacity,
+              transform: [{ translateY: subtitleTranslateY }],
+            },
+          ]}
+        >
           The humanoid companion that learns and adapts alongside you.
         </Animated.Text>
         
-        <Animated.View style={buttonStyle}>
+        <Animated.View
+          style={{
+            opacity: buttonOpacity,
+            transform: [{ scale: buttonScale }],
+          }}
+        >
           <TouchableOpacity 
             style={styles.button}
             activeOpacity={0.8}

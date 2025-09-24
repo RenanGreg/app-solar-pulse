@@ -1,96 +1,63 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  withSequence,
-} from 'react-native-reanimated';
-
-const { width } = Dimensions.get('window');
+import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
 
 export function ProductSkeleton() {
-  const opacity = useSharedValue(0.3);
+  const opacity = useRef(new Animated.Value(0.3)).current;
 
   useEffect(() => {
-    opacity.value = withRepeat(
-      withSequence(
-        withTiming(0.7, { duration: 1000 }),
-        withTiming(0.3, { duration: 1000 })
-      ),
-      -1,
-      true
-    );
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 0.3,
+          duration: 1000,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
   }, []);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
-
   return (
-    <View style={styles.container}>
-      <Animated.View style={[styles.image, animatedStyle]} />
+    <Animated.View style={[styles.container, { opacity }]}>
+      <View style={styles.image} />
       <View style={styles.content}>
-        <Animated.View style={[styles.categoryTag, animatedStyle]} />
-        <Animated.View style={[styles.title, animatedStyle]} />
-        <Animated.View style={[styles.price, animatedStyle]} />
-        <Animated.View style={[styles.button, animatedStyle]} />
+        <View style={styles.title} />
+        <View style={styles.price} />
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 12,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 10,
-    },
-    shadowOpacity: 0.15,
-    shadowRadius: 20,
-    elevation: 8,
-    width: width * 0.8,
-    maxWidth: 400,
+    width: 280,
   },
   image: {
     width: '100%',
-    height: 250,
-    backgroundColor: '#f0f0f0',
+    height: 200,
+    backgroundColor: '#e0e0e0',
   },
   content: {
-    padding: 20,
-    gap: 12,
-  },
-  categoryTag: {
-    width: 80,
-    height: 24,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 12,
+    padding: 16,
+    gap: 8,
   },
   title: {
     width: '80%',
-    height: 24,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 6,
-    marginTop: 8,
+    height: 20,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 4,
   },
   price: {
     width: '40%',
-    height: 32,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 6,
-    marginTop: 8,
-  },
-  button: {
-    width: '100%',
-    height: 48,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 25,
-    marginTop: 16,
+    height: 20,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 4,
   },
 });
