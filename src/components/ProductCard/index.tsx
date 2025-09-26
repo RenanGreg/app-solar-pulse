@@ -1,58 +1,18 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, Animated, PanResponder } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image, ImageSourcePropType } from 'react-native';
 
 type ProductCardProps = {
   title: string;
   price: number;
-  image: string;
+  image: ImageSourcePropType;
   category: string;
 };
 
 export function ProductCard({ title, price, image, category }: ProductCardProps) {
-  const pan = useRef(new Animated.ValueXY()).current;
-  const scale = useRef(new Animated.Value(1)).current;
-
-  const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onPanResponderGrant: () => {
-      Animated.spring(scale, {
-        toValue: 0.95,
-        useNativeDriver: true,
-      }).start();
-    },
-    onPanResponderMove: Animated.event(
-      [null, { dx: pan.x, dy: pan.y }],
-      { useNativeDriver: false }
-    ),
-    onPanResponderRelease: () => {
-      Animated.parallel([
-        Animated.spring(pan, {
-          toValue: { x: 0, y: 0 },
-          useNativeDriver: false,
-        }),
-        Animated.spring(scale, {
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    },
-  });
-
-  const animatedStyle = {
-    transform: [
-      { translateX: pan.x },
-      { translateY: pan.y },
-      { scale },
-    ],
-  };
-
   return (
-    <Animated.View
-      style={[styles.container, animatedStyle]}
-      {...panResponder.panHandlers}
-    >
+    <View style={styles.container}>
       <Image
-        source={{ uri: image }}
+        source={image}
         style={styles.image}
         resizeMode="cover"
       />
@@ -69,7 +29,7 @@ export function ProductCard({ title, price, image, category }: ProductCardProps)
           <Text style={styles.buttonText}>Learn More →</Text>
         </TouchableOpacity>
       </View>
-    </Animated.View>
+    </View>
   );
 }
 

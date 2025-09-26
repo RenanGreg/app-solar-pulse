@@ -1,98 +1,28 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
 export function Banner() {
-  const titleOpacity = useRef(new Animated.Value(0)).current;
-  const titleTranslateY = useRef(new Animated.Value(50)).current;
-  const subtitleOpacity = useRef(new Animated.Value(0)).current;
-  const subtitleTranslateY = useRef(new Animated.Value(30)).current;
-  const buttonScale = useRef(new Animated.Value(0.8)).current;
-  const buttonOpacity = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.sequence([
-      Animated.parallel([
-        Animated.timing(titleOpacity, {
-          toValue: 1,
-          duration: 1000,
-          delay: 300,
-          useNativeDriver: true,
-        }),
-        Animated.spring(titleTranslateY, {
-          toValue: 0,
-          delay: 300,
-          useNativeDriver: true,
-        }),
-      ]),
-      Animated.parallel([
-        Animated.timing(subtitleOpacity, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.spring(subtitleTranslateY, {
-          toValue: 0,
-          useNativeDriver: true,
-        }),
-      ]),
-      Animated.parallel([
-        Animated.spring(buttonScale, {
-          toValue: 1,
-          useNativeDriver: true,
-        }),
-        Animated.timing(buttonOpacity, {
-          toValue: 1,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ]),
-    ]).start();
-  }, []);
-
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <Text style={styles.tag}>Purpose</Text>
         
-        <Animated.Text
-          style={[
-            styles.title,
-            {
-              opacity: titleOpacity,
-              transform: [{ translateY: titleTranslateY }],
-            },
-          ]}
-        >
-          Atlas: Where Code{"\n"}Meets Motion
-        </Animated.Text>
+        <Text style={styles.title}>\n          Atlas: Where Code{`\n`}Meets Motion\n        </Text>
 
-        <Animated.Text
-          style={[
-            styles.subtitle,
-            {
-              opacity: subtitleOpacity,
-              transform: [{ translateY: subtitleTranslateY }],
-            },
-          ]}
-        >
+        <Text style={styles.subtitle}>
           The humanoid companion that learns and adapts alongside you.
-        </Animated.Text>
+        </Text>
         
-        <Animated.View
-          style={{
-            opacity: buttonOpacity,
-            transform: [{ scale: buttonScale }],
-          }}
-        >
+        <View>
           <TouchableOpacity 
             style={styles.button}
             activeOpacity={0.8}
           >
             <Text style={styles.buttonText}>Request Access →</Text>
           </TouchableOpacity>
-        </Animated.View>
+        </View>
       </View>
     </View>
   );
