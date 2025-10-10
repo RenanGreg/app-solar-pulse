@@ -1,39 +1,17 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HomePage } from './src/pages/home';
 import { ContactPage } from './src/pages/contact';
 
-const Stack = createNativeStackNavigator();
-
 export default function App() {
   return (
-    <NavigationContainer>
+    <Router>
       <StatusBar style="light" />
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          contentStyle: { backgroundColor: '#0A0A1F' },
-        }}
-      >
-        <Stack.Screen name="Home" component={HomePage} />
-        <Stack.Screen 
-          name="Contact" 
-          component={ContactPage}
-          options={{
-            headerShown: true,
-            headerTitle: 'Solicitar Orçamento',
-            headerStyle: {
-              backgroundColor: '#0A0A1F',
-            },
-            headerTintColor: '#E6E6FA',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/contact" element={<ContactPage />} />
+      </Routes>
+    </Router>
   );
 }

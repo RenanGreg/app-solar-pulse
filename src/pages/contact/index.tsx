@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 export function ContactPage() {
   const [formData, setFormData] = useState({
@@ -7,9 +8,15 @@ export function ContactPage() {
     email: '',
     telefone: '',
     endereco: '',
-    tipoInstalacao: '',
+    tipoInstalacao: 'residencial',
     mensagem: '',
   });
+
+  const tiposInstalacao = [
+    { label: 'Residencial', value: 'residencial' },
+    { label: 'Comercial', value: 'comercial' },
+    { label: 'Industrial', value: 'industrial' },
+  ];
 
   const handleSubmit = () => {
     if (!formData.nome || !formData.email || !formData.telefone) {
@@ -82,13 +89,25 @@ export function ContactPage() {
 
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Tipo de Instalação</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Residencial, Comercial ou Industrial"
-              placeholderTextColor="#B8B8E6"
-              value={formData.tipoInstalacao}
-              onChangeText={(text) => setFormData({ ...formData, tipoInstalacao: text })}
-            />
+            <View style={styles.pickerContainer}>
+              <Picker
+                selectedValue={formData.tipoInstalacao}
+                onValueChange={(itemValue) =>
+                  setFormData({ ...formData, tipoInstalacao: itemValue })
+                }
+                style={styles.picker}
+                dropdownIconColor="#E6E6FA"
+              >
+                {tiposInstalacao.map((tipo) => (
+                  <Picker.Item
+                    key={tipo.value}
+                    label={tipo.label}
+                    value={tipo.value}
+                    color="#E6E6FA"
+                  />
+                ))}
+              </Picker>
+            </View>
           </View>
 
           <View style={styles.inputGroup}>
@@ -159,6 +178,17 @@ const styles = StyleSheet.create({
     padding: 16,
     color: '#E6E6FA',
     fontSize: 16,
+  },
+  pickerContainer: {
+    backgroundColor: 'rgba(123, 104, 238, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(123, 104, 238, 0.3)',
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  picker: {
+    color: '#E6E6FA',
+    backgroundColor: 'transparent',
   },
   textArea: {
     minHeight: 120,

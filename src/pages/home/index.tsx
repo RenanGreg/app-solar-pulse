@@ -6,7 +6,8 @@ import { Banner } from '../../components/Banner';
 import { FeaturedCarousel } from '../../components/FeaturedCarousel';
 import { ParallaxScrollView } from '../../components/ParallaxScrollView';
 import { SolarServices } from '../../components/SolarServices';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigate } from 'react-router-dom';
+import { NavigationProps } from '../../types/navigation';
 
 const products = [
   {
@@ -39,14 +40,14 @@ const products = [
 ];
 
 export function HomePage() {
-  const navigation = useNavigation();
+  const navigation = useNavigate();
 
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.mainContainer}>
         <ParallaxScrollView>
           <Header />
-          <Banner onRequestQuote={() => navigation.navigate('Contact')} />
+          <Banner onRequestQuote={() => navigation('/contact')} />
           <FeaturedCarousel products={products} />
           <SolarServices />
         </ParallaxScrollView>
