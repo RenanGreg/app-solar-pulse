@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigate } from 'react-router-dom';
 
 export function ContactPage() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -35,6 +37,13 @@ export function ContactPage() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
+        <TouchableOpacity 
+          style={styles.backButton} 
+          onPress={() => navigate('/')}
+        >
+          <Text style={styles.backButtonText}>← Voltar</Text>
+        </TouchableOpacity>
+
         <Text style={styles.title}>Solicite seu Orçamento</Text>
         <Text style={styles.subtitle}>
           Preencha o formulário abaixo e nossa equipe entrará em contato em até 24 horas.
@@ -95,15 +104,16 @@ export function ContactPage() {
                 onValueChange={(itemValue) =>
                   setFormData({ ...formData, tipoInstalacao: itemValue })
                 }
-                style={styles.picker}
-                dropdownIconColor="#E6E6FA"
+                style={[styles.picker, Platform.OS === 'web' && styles.pickerWeb]}
+                dropdownIconColor="#7B68EE"
+                mode="dropdown"
               >
                 {tiposInstalacao.map((tipo) => (
                   <Picker.Item
                     key={tipo.value}
                     label={tipo.label}
                     value={tipo.value}
-                    color="#E6E6FA"
+                    style={styles.pickerItem}
                   />
                 ))}
               </Picker>
@@ -142,6 +152,30 @@ const styles = StyleSheet.create({
     maxWidth: 800,
     width: '100%',
     alignSelf: 'center',
+  },
+  backButton: {
+    marginBottom: 24,
+    alignSelf: 'flex-start',
+    backgroundColor: 'rgba(123, 104, 238, 0.1)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(123, 104, 238, 0.3)',
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        ':hover': {
+          backgroundColor: 'rgba(123, 104, 238, 0.2)',
+        },
+      },
+    }),
+  },
+  backButtonText: {
+    color: '#E6E6FA',
+    fontSize: 16,
+    fontWeight: '500',
   },
   title: {
     fontSize: 36,
@@ -185,10 +219,47 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(123, 104, 238, 0.3)',
     borderRadius: 8,
     overflow: 'hidden',
+    ...Platform.select({
+      web: {
+        boxShadow: '0 0 10px rgba(123, 104, 238, 0.2)',
+        transition: 'all 0.3s ease',
+      },
+      default: {
+        shadowColor: '#7B68EE',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 3,
+      },
+    }),
   },
   picker: {
     color: '#E6E6FA',
     backgroundColor: 'transparent',
+    height: 50,
+  },
+  pickerWeb: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    outlineStyle: 'none',
+    cursor: 'pointer',
+    appearance: 'none',
+    WebkitAppearance: 'none',
+    MozAppearance: 'none',
+    backgroundColor: 'rgba(10, 10, 31, 0.95)',
+    color: '#E6E6FA',
+    borderRadius: 8,
+  },
+  pickerItem: {
+    fontSize: 16,
+    height: 50,
+    backgroundColor: '#0A0A1F',
+    color: '#E6E6FA',
+    ...Platform.select({
+      web: {
+        padding: 8,
+      },
+    }),
   },
   textArea: {
     minHeight: 120,
