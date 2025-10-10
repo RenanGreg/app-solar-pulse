@@ -1,15 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigate } from 'react-router-dom';
 
 export function Header() {
+  const navigate = useNavigate();
+
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Text style={styles.logo}>☀️ Solar Pulse</Text>
+        <TouchableOpacity onPress={() => navigate('/')}>
+          <Text style={styles.logo}>☀️ Solar Pulse</Text>
+        </TouchableOpacity>
       </View>
       
       <View style={styles.nav}>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigate('/')}>
           <Text style={styles.navText}>Início</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
@@ -18,8 +23,14 @@ export function Header() {
         <TouchableOpacity style={styles.navItem}>
           <Text style={styles.navText}>Serviços</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigate('/contact')}>
           <Text style={styles.navText}>Contato</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={[styles.navItem, styles.chatButton]} 
+          onPress={() => navigate('/chat')}
+        >
+          <Text style={styles.chatButtonText}>💬 Chat</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -62,5 +73,15 @@ const styles = StyleSheet.create({
     color: '#E6E6FA',
     fontSize: 16,
     fontWeight: '500',
+  },
+  chatButton: {
+    backgroundColor: '#7B68EE',
+    paddingHorizontal: 16,
+    borderRadius: 20,
+  },
+  chatButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
   },
 });
