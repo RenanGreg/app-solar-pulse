@@ -14,24 +14,62 @@ interface Message {
   id: string;
   text: string;
   sender: 'user' | 'bot';
+  options?: Option[];
 }
+
+interface Option {
+  id: string;
+  text: string;
+  action: string;
+}
+
+const initialOptions: Option[] = [
+  { id: '1', text: 'Quero fazer um orçamento', action: 'orçamento' },
+  { id: '2', text: 'Informações sobre energia solar', action: 'energia solar' },
+  { id: '3', text: 'Custos e economia', action: 'economia' },
+  { id: '4', text: 'Processo de instalação', action: 'instalação' },
+  { id: '5', text: 'Falar com um atendente', action: 'atendente' },
+];
 
 const initialMessages: Message[] = [
   {
     id: '1',
     text: 'Olá! Sou o assistente virtual da Pulse Robot. Como posso ajudar você hoje?',
     sender: 'bot',
+    options: initialOptions,
   },
 ];
 
 const botResponses = {
-  default: 'Desculpe, não entendi. Pode reformular sua pergunta?',
+  default: 'Como posso ajudar você? Escolha uma das opções abaixo:',
   keywords: {
-    'orçamento': 'Para solicitar um orçamento, você pode acessar nossa página de contato ou me dizer os detalhes do seu projeto.',
-    'energia solar': 'Oferecemos soluções completas em energia solar, incluindo instalação e manutenção de painéis solares.',
-    'preço': 'O preço varia de acordo com seu consumo e necessidades específicas. Posso te ajudar a fazer uma estimativa.',
-    'instalação': 'Nossa equipe especializada realiza a instalação completa do sistema, seguindo todas as normas técnicas.',
-    'economia': 'Com energia solar, você pode economizar até 95% na sua conta de energia elétrica!',
+    'orçamento': 'Para solicitar um orçamento, você pode acessar nossa página de contato ou me dizer os detalhes do seu projeto. Gostaria de saber mais sobre:',
+    'energia solar': 'Oferecemos soluções completas em energia solar, incluindo instalação e manutenção de painéis solares. Você gostaria de saber mais sobre:',
+    'economia': 'Com energia solar, você pode economizar até 95% na sua conta de energia elétrica! Quer saber mais detalhes sobre:',
+    'instalação': 'Nossa equipe especializada realiza a instalação completa do sistema, seguindo todas as normas técnicas. Gostaria de saber mais sobre:',
+    'atendente': 'Claro! Vou conectar você com um de nossos especialistas. Por favor, aguarde um momento enquanto faço a transferência.',
+  },
+  subOptions: {
+    'orçamento': [
+      { id: 'orc1', text: 'Residencial', action: 'orçamento residencial' },
+      { id: 'orc2', text: 'Comercial', action: 'orçamento comercial' },
+      { id: 'orc3', text: 'Industrial', action: 'orçamento industrial' },
+    ],
+    'energia solar': [
+      { id: 'sol1', text: 'Como funciona', action: 'funcionamento' },
+      { id: 'sol2', text: 'Tipos de painéis', action: 'tipos painéis' },
+      { id: 'sol3', text: 'Manutenção', action: 'manutenção' },
+    ],
+    'economia': [
+      { id: 'eco1', text: 'Tempo de retorno', action: 'payback' },
+      { id: 'eco2', text: 'Economia mensal', action: 'economia mensal' },
+      { id: 'eco3', text: 'Financiamento', action: 'financiamento' },
+    ],
+    'instalação': [
+      { id: 'ins1', text: 'Etapas do processo', action: 'etapas' },
+      { id: 'ins2', text: 'Tempo de instalação', action: 'tempo' },
+      { id: 'ins3', text: 'Requisitos técnicos', action: 'requisitos' },
+    ],
   },
 };
 
@@ -40,16 +78,39 @@ export function ChatBot() {
   const [inputText, setInputText] = useState('');
   const scrollViewRef = React.useRef<ScrollView>(null);
 
-  const getBotResponse = (userMessage: string): string => {
+  const getBotResponse = (userMessage: string): Message => {
     const lowercaseMessage = userMessage.toLowerCase();
-    
-    for (const [keyword, response] of Object.entries(botResponses.keywords)) {
+    let response = {
+      id: Date.now().toString(),
+      text: botResponses.default,
+      sender: 'bot' as const,
+      options: initialOptions,
+    };
+
+    for (const [keyword, text] of Object.entries(botResponses.keywords)) {
       if (lowercaseMessage.includes(keyword)) {
-        return response;
+        response.text = text;
+        response.options = botResponses.subOptions[keyword as keyof typeof botResponses.subOptions] || initialOptions;
+        break;
       }
     }
-    
-    return botResponses.default;
+
+    return response;
+  };
+
+  const handleOptionSelect = (option: Option) => {
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      text: option.text,
+      sender: 'user',
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+
+    setTimeout(() => {
+      const botMessage = getBotResponse(option.action);
+      setMessages((prev) => [...prev, botMessage]);
+    }, 500);
   };
 
   const handleSend = () => {
@@ -64,15 +125,10 @@ export function ChatBot() {
     setMessages((prev) => [...prev, userMessage]);
     setInputText('');
 
-    // Simular resposta do bot após 1 segundo
     setTimeout(() => {
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: getBotResponse(inputText),
-        sender: 'bot',
-      };
+      const botMessage = getBotResponse(inputText);
       setMessages((prev) => [...prev, botMessage]);
-    }, 1000);
+    }, 500);
   };
 
   return (
@@ -91,28 +147,43 @@ export function ChatBot() {
         onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
       >
         {messages.map((message) => (
-          <View
-            key={message.id}
-            style={[
-              styles.messageWrapper,
-              message.sender === 'user' ? styles.userMessageWrapper : styles.botMessageWrapper,
-            ]}
-          >
+          <View key={message.id}>
             <View
               style={[
-                styles.message,
-                message.sender === 'user' ? styles.userMessage : styles.botMessage,
+                styles.messageWrapper,
+                message.sender === 'user' ? styles.userMessageWrapper : styles.botMessageWrapper,
               ]}
             >
-              <Text
+              <View
                 style={[
-                  styles.messageText,
-                  message.sender === 'user' ? styles.userMessageText : styles.botMessageText,
+                  styles.message,
+                  message.sender === 'user' ? styles.userMessage : styles.botMessage,
                 ]}
               >
-                {message.text}
-              </Text>
+                <Text
+                  style={[
+                    styles.messageText,
+                    message.sender === 'user' ? styles.userMessageText : styles.botMessageText,
+                  ]}
+                >
+                  {message.text}
+                </Text>
+              </View>
             </View>
+
+            {message.options && (
+              <View style={styles.optionsContainer}>
+                {message.options.map((option) => (
+                  <TouchableOpacity
+                    key={option.id}
+                    style={styles.optionButton}
+                    onPress={() => handleOptionSelect(option)}
+                  >
+                    <Text style={styles.optionText}>{option.text}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
           </View>
         ))}
       </ScrollView>
@@ -192,6 +263,31 @@ const styles = StyleSheet.create({
   },
   botMessageText: {
     color: '#E6E6FA',
+  },
+  optionsContainer: {
+    marginTop: 8,
+    gap: 8,
+  },
+  optionButton: {
+    backgroundColor: 'rgba(123, 104, 238, 0.15)',
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(123, 104, 238, 0.3)',
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        ':hover': {
+          backgroundColor: 'rgba(123, 104, 238, 0.25)',
+        },
+      },
+    }),
+  },
+  optionText: {
+    color: '#E6E6FA',
+    fontSize: 14,
+    textAlign: 'center',
   },
   inputContainer: {
     flexDirection: 'row',
