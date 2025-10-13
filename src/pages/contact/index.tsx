@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@react-navigation/native';
+import type { NavigationProps } from '../../types/navigation';
 
 export function ContactPage() {
-  const navigate = useNavigate();
+  const navigation = useNavigation<NavigationProps>();
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -39,7 +40,7 @@ export function ContactPage() {
       <View style={styles.content}>
         <TouchableOpacity 
           style={styles.backButton} 
-          onPress={() => navigate('/')}
+          onPress={() => navigation.navigate('Home')}
         >
           <Text style={styles.backButtonText}>← Voltar</Text>
         </TouchableOpacity>

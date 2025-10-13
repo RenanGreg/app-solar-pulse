@@ -1,19 +1,22 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomePage } from './src/pages/home';
 import { ContactPage } from './src/pages/contact';
 import { ChatPage } from './src/pages/chat';
 
+const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
-    <Router>
+    <NavigationContainer>
       <StatusBar style="light" />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/chat" element={<ChatPage />} />
-      </Routes>
-    </Router>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomePage} />
+        <Stack.Screen name="Contact" component={ContactPage} />
+        <Stack.Screen name="Chat" component={ChatPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

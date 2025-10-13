@@ -1,20 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@react-navigation/native';
+import { NavigationProps } from '../../types/navigation';
 
 export function Header() {
-  const navigate = useNavigate();
+  const navigation = useNavigation<NavigationProps>();
 
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <TouchableOpacity onPress={() => navigate('/')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <Text style={styles.logo}>☀️ Solar Pulse</Text>
         </TouchableOpacity>
       </View>
       
       <View style={styles.nav}>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigate('/')}>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
           <Text style={styles.navText}>Início</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navItem}>
@@ -23,12 +24,12 @@ export function Header() {
         <TouchableOpacity style={styles.navItem}>
           <Text style={styles.navText}>Serviços</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigate('/contact')}>
+        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Contact')}>
           <Text style={styles.navText}>Contato</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.navItem, styles.chatButton]} 
-          onPress={() => navigate('/chat')}
+          onPress={() => navigation.navigate('Chat')}
         >
           <Text style={styles.chatButtonText}>💬 Chat</Text>
         </TouchableOpacity>

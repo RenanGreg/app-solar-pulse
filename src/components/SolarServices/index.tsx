@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigate } from 'react-router-dom';
+import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '../../types/navigation';
 
 const { width } = Dimensions.get('window');
@@ -35,7 +35,7 @@ function ServiceCard({ title, description, price, features, onRequestQuote }: Se
 }
 
 export function SolarServices() {
-  const navigation = useNavigate();
+  const navigation = useNavigation<NavigationProps>();
   
   const services = [
     {
@@ -87,7 +87,7 @@ export function SolarServices() {
           <ServiceCard 
             key={index} 
             {...service} 
-            onRequestQuote={() => navigation('/contact')}
+            onRequestQuote={() => navigation.navigate('Contact')}
           />
         ))}
       </View>
