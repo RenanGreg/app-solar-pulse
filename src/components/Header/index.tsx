@@ -1,35 +1,74 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '../../types/navigation';
 
+const { width } = Dimensions.get('window');
+
 export function Header() {
   const navigation = useNavigation<NavigationProps>();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+      <View style={styles.topBar}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.logoContainer}>
           <Text style={styles.logo}>☀️ Solar Pulse</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={styles.menuButton} 
+          onPress={toggleMenu}
+        >
+          <Text style={styles.menuIcon}>☰</Text>
         </TouchableOpacity>
       </View>
       
-      <View style={styles.nav}>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Home')}>
+      <View style={[
+        styles.nav,
+        isMenuOpen ? styles.navOpen : styles.navClosed,
+        Platform.OS === 'web' && width > 768 ? styles.navWeb : null
+      ]}>
+        <TouchableOpacity 
+          style={styles.navItem} 
+          onPress={() => {
+            navigation.navigate('Home');
+            setIsMenuOpen(false);
+          }}
+        >
           <Text style={styles.navText}>Início</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity 
+          style={styles.navItem}
+          onPress={() => setIsMenuOpen(false)}
+        >
           <Text style={styles.navText}>Produtos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
+        <TouchableOpacity 
+          style={styles.navItem}
+          onPress={() => setIsMenuOpen(false)}
+        >
           <Text style={styles.navText}>Serviços</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem} onPress={() => navigation.navigate('Contact')}>
+        <TouchableOpacity 
+          style={styles.navItem} 
+          onPress={() => {
+            navigation.navigate('Contact');
+            setIsMenuOpen(false);
+          }}
+        >
           <Text style={styles.navText}>Contato</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={[styles.navItem, styles.chatButton]} 
-          onPress={() => navigation.navigate('Chat')}
+          onPress={() => {
+            navigation.navigate('Chat');
+            setIsMenuOpen(false);
+          }}
         >
           <Text style={styles.chatButtonText}>💬 Chat</Text>
         </TouchableOpacity>
@@ -40,49 +79,91 @@ export function Header() {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'rgba(10, 10, 31, 0.95)',
+    paddingTop: Platform.OS === 'web' ? 16 : 40,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(123, 104, 238, 0.2)',
+  },
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#0A0A1F',
-    width: '100%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#2E2E5F',
+    paddingHorizontal: 20,
+    paddingBottom: 16,
   },
   logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flex: 1,
   },
   logo: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#7B68EE',
-    textShadowColor: '#7B68EE',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
+    color: '#E6E6FA',
+  },
+  menuButton: {
+    display: Platform.OS === 'web' && width > 768 ? 'none' : 'flex',
+    padding: 8,
+  },
+  menuIcon: {
+    fontSize: 24,
+    color: '#E6E6FA',
   },
   nav: {
+    ...Platform.select({
+      web: {
+        flexDirection: width > 768 ? 'row' : 'column',
+      },
+      default: {
+        flexDirection: 'column',
+      },
+    }),
+    gap: 8,
+    paddingHorizontal: 20,
+  },
+  navWeb: {
     flexDirection: 'row',
-    gap: 20,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    paddingBottom: 16,
+  },
+  navOpen: {
+    display: 'flex',
+    paddingBottom: 16,
+  },
+  navClosed: {
+    ...Platform.select({
+      web: {
+        display: width > 768 ? 'flex' : 'none',
+      },
+      default: {
+        display: 'none',
+      },
+    }),
   },
   navItem: {
-    padding: 8,
-    borderRadius: 8,
-    backgroundColor: 'rgba(123, 104, 238, 0.1)',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    backgroundColor: 'transparent',
+    ...Platform.select({
+      web: {
+        transition: 'all 0.3s ease',
+      },
+    }),
   },
   navText: {
     color: '#E6E6FA',
     fontSize: 16,
-    fontWeight: '500',
+    textAlign: Platform.OS === 'web' && width <= 768 ? 'center' : 'left',
   },
   chatButton: {
-    backgroundColor: '#7B68EE',
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    backgroundColor: 'rgba(123, 104, 238, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(123, 104, 238, 0.3)',
   },
   chatButtonText: {
-    color: '#FFFFFF',
+    color: '#7B68EE',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '500',
+    textAlign: 'center',
   },
 });

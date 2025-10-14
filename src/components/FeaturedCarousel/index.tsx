@@ -1,6 +1,8 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions, ScrollView, Text, TouchableOpacity, Platform } from 'react-native';
 import { ProductCard } from '../ProductCard';
+
+const { width } = Dimensions.get('window');
 
 type Product = {
   id: number;
@@ -20,8 +22,10 @@ type CarouselInstance = {
 
 export const FeaturedCarousel = forwardRef<CarouselInstance, FeaturedCarouselProps>(
   ({ products }, ref) => {
-    const { width } = Dimensions.get('window');
-    const ITEM_WIDTH = width * 0.8;
+    const ITEM_WIDTH = Platform.select({
+      web: width > 1200 ? 400 : width > 768 ? width * 0.4 : width * 0.8,
+      default: width * 0.8,
+    });
     const scrollViewRef = useRef<ScrollView>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -37,12 +41,13 @@ export const FeaturedCarousel = forwardRef<CarouselInstance, FeaturedCarouselPro
 
     return (
       <View style={styles.container}>
+        <Text style={styles.sectionTitle}>Produtos em Destaque</Text>
         <ScrollView
           ref={scrollViewRef}
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[styles.scrollContent, { gap: 20 }]}
           snapToInterval={ITEM_WIDTH + 20}
           decelerationRate="fast"
           snapToAlignment="center"
@@ -109,14 +114,24 @@ export const FeaturedCarousel = forwardRef<CarouselInstance, FeaturedCarouselPro
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 40,
+    paddingVertical: Platform.OS === 'web' ? 80 : 40,
     backgroundColor: '#0A0A1F',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(123, 104, 238, 0.2)',
+  },
+  sectionTitle: {
+    fontSize: Platform.OS === 'web' ? 32 : 24,
+    fontWeight: 'bold',
+    color: '#E6E6FA',
+    textAlign: 'center',
+    marginBottom: 40,
+    paddingHorizontal: 20,
   },
   scrollContent: {
     paddingHorizontal: 20,
+    alignItems: 'center',
   },
   cardContainer: {
-    paddingHorizontal: 10,
     alignItems: 'center',
   },
   pagination: {
@@ -136,43 +151,42 @@ const styles = StyleSheet.create({
   },
   paginationDotActive: {
     backgroundColor: '#7B68EE',
-    width: 24,
-    shadowColor: '#7B68EE',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 8,
+    transform: [{ scale: 1.2 }],
   },
   navigationButtons: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
-    gap: 24,
+    marginTop: 20,
+    gap: 16,
   },
   navButton: {
     backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
-    shadowColor: '#7B68EE',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+      },
+    }),
   },
   navButtonDisabled: {
-    backgroundColor: 'rgba(123, 104, 238, 0.05)',
-    borderColor: 'rgba(123, 104, 238, 0.1)',
+    opacity: 0.5,
+    ...Platform.select({
+      web: {
+        cursor: 'not-allowed',
+      },
+    }),
   },
   navButtonText: {
     color: '#7B68EE',
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
-    textShadowColor: '#7B68EE',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 4,
   },
 });

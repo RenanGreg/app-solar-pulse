@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '../../types/navigation';
 
@@ -97,69 +97,74 @@ export function SolarServices() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 40,
+    paddingVertical: Platform.OS === 'web' ? 80 : 40,
+    paddingHorizontal: 20,
     backgroundColor: '#0A0A1F',
   },
   sectionTitle: {
-    fontSize: 36,
+    fontSize: Platform.OS === 'web' ? 32 : 24,
     fontWeight: 'bold',
     color: '#E6E6FA',
-    marginBottom: 16,
     textAlign: 'center',
-    textShadowColor: '#7B68EE',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 10,
+    marginBottom: 16,
   },
   sectionSubtitle: {
-    fontSize: 18,
+    fontSize: Platform.OS === 'web' ? 18 : 16,
     color: '#B8B8E6',
-    marginBottom: 40,
     textAlign: 'center',
+    marginBottom: 40,
     maxWidth: 600,
     alignSelf: 'center',
   },
   servicesGrid: {
-    flexDirection: 'row',
+    flexDirection: Platform.select({
+      web: width > 1200 ? 'row' : width > 768 ? 'row' : 'column',
+      default: 'column',
+    }),
     flexWrap: 'wrap',
     justifyContent: 'center',
-    gap: 24,
+    alignItems: 'stretch',
+    gap: 20,
+    maxWidth: 1200,
+    marginHorizontal: 'auto',
   },
   card: {
     backgroundColor: 'rgba(123, 104, 238, 0.05)',
     borderRadius: 20,
-    padding: 32,
-    width: Math.min(350, width - 80),
+    padding: Platform.OS === 'web' ? 32 : 24,
     borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
-    shadowColor: '#7B68EE',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3,
-    shadowRadius: 16,
-    elevation: 8,
+    borderColor: 'rgba(123, 104, 238, 0.2)',
+    width: Platform.select({
+      web: width > 1200 ? '30%' : width > 768 ? '45%' : '100%',
+      default: '100%',
+    }),
+    minWidth: Platform.OS === 'web' ? 300 : undefined,
+    ...Platform.select({
+      web: {
+        transition: 'all 0.3s ease',
+      },
+    }),
   },
   cardTitle: {
-    fontSize: 24,
+    fontSize: Platform.OS === 'web' ? 24 : 20,
     fontWeight: 'bold',
     color: '#E6E6FA',
     marginBottom: 12,
-    textShadowColor: '#7B68EE',
-    textShadowOffset: { width: 0, height: 0 },
-    textShadowRadius: 5,
   },
   cardDescription: {
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 14,
     color: '#B8B8E6',
     marginBottom: 16,
   },
   cardPrice: {
-    fontSize: 28,
+    fontSize: Platform.OS === 'web' ? 28 : 24,
     fontWeight: 'bold',
     color: '#7B68EE',
     marginBottom: 24,
   },
   featuresList: {
-    gap: 12,
     marginBottom: 32,
+    gap: 12,
   },
   featureItem: {
     flexDirection: 'row',
@@ -168,25 +173,30 @@ const styles = StyleSheet.create({
   },
   featureIcon: {
     color: '#7B68EE',
-    fontSize: 18,
+    fontSize: Platform.OS === 'web' ? 18 : 16,
     fontWeight: 'bold',
   },
   featureText: {
     color: '#B8B8E6',
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 14,
   },
   cardButton: {
     backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
+    paddingVertical: Platform.OS === 'web' ? 16 : 14,
+    paddingHorizontal: Platform.OS === 'web' ? 32 : 24,
     borderRadius: 30,
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
+    ...Platform.select({
+      web: {
+        transition: 'all 0.3s ease',
+      },
+    }),
   },
   cardButtonText: {
     color: '#7B68EE',
-    fontSize: 16,
+    fontSize: Platform.OS === 'web' ? 16 : 14,
     fontWeight: 'bold',
     letterSpacing: 1,
   },

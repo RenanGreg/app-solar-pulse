@@ -6,6 +6,7 @@ import { Banner } from '../../components/Banner';
 import { FeaturedCarousel } from '../../components/FeaturedCarousel';
 import { ParallaxScrollView } from '../../components/ParallaxScrollView';
 import { SolarServices } from '../../components/SolarServices';
+import { InstallationProcess } from '../../components/InstallationProcess';
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProps } from '../../types/navigation';
 
@@ -50,6 +51,7 @@ export function HomePage() {
           <Banner onRequestQuote={() => navigation.navigate('Contact')} />
           <FeaturedCarousel products={products} />
           <SolarServices />
+          <InstallationProcess />
         </ParallaxScrollView>
       </View>
     </GestureHandlerRootView>

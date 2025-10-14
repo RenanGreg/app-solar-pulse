@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Platform } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -36,60 +36,67 @@ export function Banner({ onRequestQuote }: BannerProps) {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    marginBottom: 20,
-  },
   container: {
-    width: width,
+    minHeight: Platform.OS === 'web' ? 500 : 400,
     backgroundColor: '#0A0A1F',
-    padding: 40,
-    minHeight: 400,
-    position: 'relative',
-    overflow: 'hidden',
+    paddingHorizontal: 20,
+    paddingVertical: Platform.OS === 'web' ? 80 : 40,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(123, 104, 238, 0.2)',
   },
   content: {
-    maxWidth: 600,
-    marginBottom: 20,
-    position: 'relative',
-    zIndex: 1,
+    maxWidth: 1200,
+    marginHorizontal: 'auto',
+    alignItems: Platform.OS === 'web' ? 'flex-start' : 'center',
   },
   tag: {
     backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    color: '#7B68EE',
-    padding: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderRadius: 20,
-    fontSize: 14,
-    width: 'auto',
-    alignSelf: 'flex-start',
-    overflow: 'hidden',
-    marginBottom: 20,
+    color: '#7B68EE',
+    fontSize: Platform.OS === 'web' ? 16 : 14,
+    fontWeight: '500',
+    marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
+    overflow: 'hidden',
+    textAlign: 'center',
+  },
+  titleContainer: {
+    marginBottom: 24,
+    width: '100%',
   },
   title: {
-    fontSize: 48,
+    fontSize: Platform.select({
+      web: width > 768 ? 48 : 32,
+      default: 32,
+    }),
     fontWeight: 'bold',
     color: '#E6E6FA',
-    marginBottom: 20,
+    textAlign: Platform.OS === 'web' ? 'left' : 'center',
     textShadowColor: '#7B68EE',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 10,
+    marginBottom: 8,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: Platform.select({
+      web: width > 768 ? 18 : 16,
+      default: 16,
+    }),
     color: '#B8B8E6',
-    marginBottom: 20,
-    lineHeight: 28,
-    letterSpacing: 0.5,
+    marginBottom: 32,
+    lineHeight: Platform.OS === 'web' ? 28 : 24,
+    textAlign: Platform.OS === 'web' ? 'left' : 'center',
+    maxWidth: Platform.OS === 'web' ? 600 : '100%',
   },
   button: {
     backgroundColor: '#7B68EE',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
+    paddingVertical: Platform.OS === 'web' ? 16 : 14,
+    paddingHorizontal: Platform.OS === 'web' ? 32 : 24,
     borderRadius: 30,
-    alignSelf: 'flex-start',
+    alignSelf: 'center',
     shadowColor: '#7B68EE',
     shadowOffset: {
       width: 0,
@@ -98,12 +105,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 16,
     elevation: 8,
-    borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
+    ...Platform.select({
+      web: {
+        transition: 'all 0.3s ease',
+      },
+    }),
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: '#FFFFFF',
+    fontSize: Platform.OS === 'web' ? 18 : 16,
     fontWeight: 'bold',
     letterSpacing: 1,
   },
