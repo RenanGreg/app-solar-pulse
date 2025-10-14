@@ -1,141 +1,78 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProps } from '../../types/navigation';
 
 export function ContactPage() {
   const navigation = useNavigation<NavigationProps>();
-  const [formData, setFormData] = useState({
-    nome: '',
-    email: '',
-    telefone: '',
-    endereco: '',
-    tipoInstalacao: 'residencial',
-    mensagem: '',
-  });
-
-  const tiposInstalacao = [
-    { label: 'Residencial', value: 'residencial' },
-    { label: 'Comercial', value: 'comercial' },
-    { label: 'Industrial', value: 'industrial' },
-  ];
+  const [email, setEmail] = useState('');
 
   const handleSubmit = () => {
-    if (!formData.nome || !formData.email || !formData.telefone) {
-      Alert.alert('Erro', 'Por favor, preencha todos os campos obrigatórios.');
+    if (!email) {
+      Alert.alert('Erro', 'Por favor, insira seu e-mail.');
       return;
     }
 
-    // Aqui você pode adicionar a lógica para enviar o formulário
     Alert.alert(
       'Sucesso!',
       'Recebemos sua solicitação. Em breve nossa equipe entrará em contato.',
-      [{ text: 'OK', onPress: () => console.log('OK Pressed') }]
+      [{ text: 'OK', onPress: () => setEmail('') }]
     );
+  };
+
+  const handleCall = () => {
+    Linking.openURL('tel:(11) 9999-9999');
+  };
+
+  const handleEmail = () => {
+    Linking.openURL('mailto:contato@solartech.com.br');
+  };
+
+  const handleLocation = () => {
+    Linking.openURL('https://maps.google.com/?q=São Paulo, SP');
   };
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.content}>
-        <TouchableOpacity 
-          style={styles.backButton} 
-          onPress={() => navigation.navigate('Home')}
-        >
-          <Text style={styles.backButtonText}>← Voltar</Text>
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <Text style={styles.title}>Pronto para economizar?</Text>
+          <Text style={styles.subtitle}>
+            Solicite um orçamento gratuito e descubra quanto você pode economizar com energia solar
+          </Text>
+        </View>
 
-        <Text style={styles.title}>Solicite seu Orçamento</Text>
-        <Text style={styles.subtitle}>
-          Preencha o formulário abaixo e nossa equipe entrará em contato em até 24 horas.
-        </Text>
-
-        <View style={styles.form}>
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Nome Completo *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu nome"
-              placeholderTextColor="#B8B8E6"
-              value={formData.nome}
-              onChangeText={(text) => setFormData({ ...formData, nome: text })}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>E-mail *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu e-mail"
-              placeholderTextColor="#B8B8E6"
-              keyboardType="email-address"
-              value={formData.email}
-              onChangeText={(text) => setFormData({ ...formData, email: text })}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Telefone *</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="(00) 00000-0000"
-              placeholderTextColor="#B8B8E6"
-              keyboardType="phone-pad"
-              value={formData.telefone}
-              onChangeText={(text) => setFormData({ ...formData, telefone: text })}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Endereço</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Digite seu endereço"
-              placeholderTextColor="#B8B8E6"
-              value={formData.endereco}
-              onChangeText={(text) => setFormData({ ...formData, endereco: text })}
-            />
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Tipo de Instalação</Text>
-            <View style={styles.pickerContainer}>
-              <Picker
-                selectedValue={formData.tipoInstalacao}
-                onValueChange={(itemValue) =>
-                  setFormData({ ...formData, tipoInstalacao: itemValue })
-                }
-                style={[styles.picker, Platform.OS === 'web' && styles.pickerWeb]}
-                dropdownIconColor="#7B68EE"
-                mode="dropdown"
-              >
-                {tiposInstalacao.map((tipo) => (
-                  <Picker.Item
-                    key={tipo.value}
-                    label={tipo.label}
-                    value={tipo.value}
-                    style={styles.pickerItem}
-                  />
-                ))}
-              </Picker>
-            </View>
-          </View>
-
-          <View style={styles.inputGroup}>
-            <Text style={styles.label}>Mensagem</Text>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="Digite sua mensagem ou dúvidas"
-              placeholderTextColor="#B8B8E6"
-              multiline
-              numberOfLines={4}
-              value={formData.mensagem}
-              onChangeText={(text) => setFormData({ ...formData, mensagem: text })}
-            />
-          </View>
-
+        <View style={styles.formContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder="Seu melhor e-mail"
+            placeholderTextColor="#B8B8E6"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+          />
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Enviar Solicitação →</Text>
+            <Text style={styles.buttonText}>Solicitar Orçamento</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.contactInfo}>
+          <TouchableOpacity style={styles.contactItem} onPress={handleCall}>
+            <Text style={styles.contactIcon}>📞</Text>
+            <Text style={styles.contactLabel}>Telefone</Text>
+            <Text style={styles.contactValue}>(11) 9999-9999</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.contactItem} onPress={handleEmail}>
+            <Text style={styles.contactIcon}>✉️</Text>
+            <Text style={styles.contactLabel}>E-mail</Text>
+            <Text style={styles.contactValue}>contato@solartech.com.br</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.contactItem} onPress={handleLocation}>
+            <Text style={styles.contactIcon}>📍</Text>
+            <Text style={styles.contactLabel}>Endereço</Text>
+            <Text style={styles.contactValue}>São Paulo, SP</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -154,58 +91,33 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
   },
-  backButton: {
-    marginBottom: 24,
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-        ':hover': {
-          backgroundColor: 'rgba(123, 104, 238, 0.2)',
-        },
-      },
-    }),
-  },
-  backButtonText: {
-    color: '#E6E6FA',
-    fontSize: 16,
-    fontWeight: '500',
+  header: {
+    alignItems: 'center',
+    marginBottom: 40,
   },
   title: {
-    fontSize: 36,
+    fontSize: Platform.OS === 'web' ? 36 : 28,
     fontWeight: 'bold',
     color: '#E6E6FA',
-    marginBottom: 16,
     textAlign: 'center',
+    marginBottom: 16,
     textShadowColor: '#7B68EE',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 10,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: Platform.OS === 'web' ? 18 : 16,
     color: '#B8B8E6',
-    marginBottom: 40,
     textAlign: 'center',
+    maxWidth: 600,
   },
-  form: {
-    gap: 24,
-  },
-  inputGroup: {
-    gap: 8,
-  },
-  label: {
-    fontSize: 16,
-    color: '#E6E6FA',
-    fontWeight: '500',
+  formContainer: {
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    gap: 16,
+    marginBottom: 60,
   },
   input: {
+    flex: Platform.OS === 'web' ? 1 : undefined,
     backgroundColor: 'rgba(123, 104, 238, 0.1)',
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
@@ -214,78 +126,59 @@ const styles = StyleSheet.create({
     color: '#E6E6FA',
     fontSize: 16,
   },
-  pickerContainer: {
-    backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
-    borderRadius: 8,
-    overflow: 'hidden',
-    ...Platform.select({
-      web: {
-        boxShadow: '0 0 10px rgba(123, 104, 238, 0.2)',
-        transition: 'all 0.3s ease',
-      },
-      default: {
-        shadowColor: '#7B68EE',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 3,
-      },
-    }),
-  },
-  picker: {
-    color: '#E6E6FA',
-    backgroundColor: 'transparent',
-    height: 50,
-  },
-  pickerWeb: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    outlineStyle: 'none',
-    cursor: 'pointer',
-    appearance: 'none',
-    WebkitAppearance: 'none',
-    MozAppearance: 'none',
-    backgroundColor: 'rgba(10, 10, 31, 0.95)',
-    color: '#E6E6FA',
-    borderRadius: 8,
-  },
-  pickerItem: {
-    fontSize: 16,
-    height: 50,
-    backgroundColor: '#0A0A1F',
-    color: '#E6E6FA',
-    ...Platform.select({
-      web: {
-        padding: 8,
-      },
-    }),
-  },
-  textArea: {
-    minHeight: 120,
-    textAlignVertical: 'top',
-  },
   button: {
     backgroundColor: '#7B68EE',
-    paddingVertical: 16,
-    paddingHorizontal: 32,
-    borderRadius: 30,
+    padding: 16,
+    borderRadius: 8,
     alignItems: 'center',
-    marginTop: 16,
-    shadowColor: '#7B68EE',
-    shadowOffset: {
-      width: 0,
-      height: 8,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 16,
-    elevation: 8,
+    justifyContent: 'center',
+    minWidth: Platform.OS === 'web' ? 200 : undefined,
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+      },
+    }),
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    letterSpacing: 1,
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  contactInfo: {
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    justifyContent: 'space-around',
+    gap: 24,
+  },
+  contactItem: {
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'rgba(123, 104, 238, 0.1)',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(123, 104, 238, 0.3)',
+    flex: Platform.OS === 'web' ? 1 : undefined,
+    margin: 8,
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+      },
+    }),
+  },
+  contactIcon: {
+    fontSize: 24,
+    marginBottom: 12,
+  },
+  contactLabel: {
+    color: '#7B68EE',
+    fontSize: 16,
+    fontWeight: '500',
+    marginBottom: 8,
+  },
+  contactValue: {
+    color: '#E6E6FA',
+    fontSize: 14,
+    textAlign: 'center',
   },
 });
