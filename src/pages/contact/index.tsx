@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, ScrollView, Alert, Platform, Linking } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProps } from '../../types/navigation';
+import { Header } from '../../components/Header';
+import { ParallaxScrollView } from '../../components/ParallaxScrollView';
 
 export function ContactPage() {
   const navigation = useNavigation<NavigationProps>();
@@ -33,56 +35,48 @@ export function ContactPage() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.backButtonText}>←</Text>
-      </TouchableOpacity>
-      <View style={styles.content}>
-        <View style={styles.header}>
+    <View style={styles.container}>
+      <ParallaxScrollView>
+        <View style={styles.headerWrapper}>
+          <Header />
+        </View>
+        <View style={styles.content}>
           <Text style={styles.title}>Pronto para economizar?</Text>
           <Text style={styles.subtitle}>
             Solicite um orçamento gratuito e descubra quanto você pode economizar com energia solar
           </Text>
+
+          <View style={styles.formContainer}>
+            <TextInput
+              style={styles.input}
+              placeholder="Seu melhor e-mail"
+              placeholderTextColor="#B8B8E6"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+              autoCapitalize="none"
+            />
+            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+              <Text style={styles.submitButtonText}>Solicitar contato</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.contactOptions}>
+            <TouchableOpacity style={styles.contactButton} onPress={handleCall}>
+              <Text style={styles.contactButtonText}>📞 Ligar agora</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.contactButton} onPress={handleEmail}>
+              <Text style={styles.contactButtonText}>✉️ E-mail</Text>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.contactButton} onPress={handleLocation}>
+              <Text style={styles.contactButtonText}>�� Localização</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
-        <View style={styles.formContainer}>
-          <TextInput
-            style={styles.input}
-            placeholder="Seu melhor e-mail"
-            placeholderTextColor="#B8B8E6"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Solicitar Orçamento</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.contactInfo}>
-          <TouchableOpacity style={styles.contactItem} onPress={handleCall}>
-            <Text style={styles.contactIcon}>📞</Text>
-            <Text style={styles.contactLabel}>Telefone</Text>
-            <Text style={styles.contactValue}>(11) 9999-9999</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.contactItem} onPress={handleEmail}>
-            <Text style={styles.contactIcon}>✉️</Text>
-            <Text style={styles.contactLabel}>E-mail</Text>
-            <Text style={styles.contactValue}>contato@solartech.com.br</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.contactItem} onPress={handleLocation}>
-            <Text style={styles.contactIcon}>📍</Text>
-            <Text style={styles.contactLabel}>Endereço</Text>
-            <Text style={styles.contactValue}>São Paulo, SP</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+      </ParallaxScrollView>
+    </View>
   );
 }
 
@@ -91,38 +85,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0A0A1F',
   },
-  backButton: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 60 : 20,
-    left: 20,
-    zIndex: 2,
-    backgroundColor: 'rgba(123, 104, 238, 0.9)',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-      },
-    }),
-  },
-  backButtonText: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: 'bold',
+  headerWrapper: {
+    position: 'relative',
+    zIndex: 100,
   },
   content: {
-    padding: 40,
-    maxWidth: 800,
-    width: '100%',
-    alignSelf: 'center',
-    marginTop: Platform.OS === 'ios' ? 80 : 40,
-  },
-  header: {
+    padding: 20,
     alignItems: 'center',
-    marginBottom: 40,
   },
   title: {
     fontSize: Platform.OS === 'web' ? 36 : 28,
@@ -130,7 +99,7 @@ const styles = StyleSheet.create({
     color: '#E6E6FA',
     textAlign: 'center',
     marginBottom: 16,
-    textShadowColor: '#7B68EE',
+    textShadowColor: 'rgba(123, 104, 238, 0.3)',
     textShadowOffset: { width: 0, height: 0 },
     textShadowRadius: 10,
   },
@@ -138,76 +107,55 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === 'web' ? 18 : 16,
     color: '#B8B8E6',
     textAlign: 'center',
-    maxWidth: 600,
+    marginBottom: 32,
   },
   formContainer: {
-    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    width: '100%',
+    maxWidth: 400,
     gap: 16,
-    marginBottom: 60,
+    marginBottom: 32,
   },
   input: {
-    flex: Platform.OS === 'web' ? 1 : undefined,
-    backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
+    backgroundColor: 'rgba(230, 230, 250, 0.1)',
     borderRadius: 8,
     padding: 16,
+    fontSize: 16,
     color: '#E6E6FA',
-    fontSize: 16,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: 'rgba(123, 104, 238, 0.3)',
   },
-  button: {
-    backgroundColor: '#7B68EE',
+  submitButton: {
+    backgroundColor: 'rgba(123, 104, 238, 0.1)',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
-    justifyContent: 'center',
-    minWidth: Platform.OS === 'web' ? 200 : undefined,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-      },
-    }),
-  },
-  buttonText: {
-    color: '#FFFFFF',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  contactInfo: {
-    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
-    justifyContent: 'space-around',
-    gap: 24,
-  },
-  contactItem: {
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    borderRadius: 16,
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
-    flex: Platform.OS === 'web' ? 1 : undefined,
-    margin: 8,
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-      },
-    }),
   },
-  contactIcon: {
-    fontSize: 24,
-    marginBottom: 12,
-  },
-  contactLabel: {
+  submitButtonText: {
     color: '#7B68EE',
     fontSize: 16,
-    fontWeight: '500',
-    marginBottom: 8,
+    fontWeight: '600',
   },
-  contactValue: {
+  contactOptions: {
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    gap: 16,
+    width: '100%',
+    maxWidth: 400,
+    justifyContent: 'center',
+  },
+  contactButton: {
+    backgroundColor: 'rgba(230, 230, 250, 0.05)',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    flex: Platform.OS === 'web' ? 1 : undefined,
+    borderWidth: 1,
+    borderColor: 'rgba(230, 230, 250, 0.1)',
+  },
+  contactButtonText: {
     color: '#E6E6FA',
-    fontSize: 14,
-    textAlign: 'center',
+    fontSize: 16,
   },
 });

@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Services: undefined;
   Contact: undefined;
   Chat: undefined;
+  Budget: undefined;
   ProductDetails: {
     id: number;
     title: string;

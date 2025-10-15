@@ -14,12 +14,6 @@ export function ServicesPage() {
     <View style={styles.container}>
       <ParallaxScrollView>
         <View style={styles.header}>
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.backButtonText}>←</Text>
-          </TouchableOpacity>
           <Header />
         </View>
         <SolarServices />

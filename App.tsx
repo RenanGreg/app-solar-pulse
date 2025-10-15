@@ -9,6 +9,7 @@ import { ChatPage } from './src/pages/chat';
 import { ProductsPage } from './src/pages/products';
 import { ProductDetailsPage } from './src/pages/products/details';
 import { ServicesPage } from './src/pages/services';
+import { BudgetPage } from './src/pages/budget';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ export default function App() {
           <Stack.Screen name="Services" component={ServicesPage} />
           <Stack.Screen name="Contact" component={ContactPage} />
           <Stack.Screen name="Chat" component={ChatPage} />
+          <Stack.Screen name="Budget" component={BudgetPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
