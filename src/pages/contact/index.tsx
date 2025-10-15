@@ -34,6 +34,12 @@ export function ContactPage() {
 
   return (
     <ScrollView style={styles.container}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.backButtonText}>←</Text>
+      </TouchableOpacity>
       <View style={styles.content}>
         <View style={styles.header}>
           <Text style={styles.title}>Pronto para economizar?</Text>
@@ -85,11 +91,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0A0A1F',
   },
+  backButton: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 60 : 20,
+    left: 20,
+    zIndex: 2,
+    backgroundColor: 'rgba(123, 104, 238, 0.9)',
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...Platform.select({
+      web: {
+        cursor: 'pointer',
+      },
+    }),
+  },
+  backButtonText: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
   content: {
     padding: 40,
     maxWidth: 800,
     width: '100%',
     alignSelf: 'center',
+    marginTop: Platform.OS === 'ios' ? 80 : 40,
   },
   header: {
     alignItems: 'center',

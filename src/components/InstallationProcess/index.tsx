@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Dimensions,
   Platform,
   ScrollView,
@@ -47,7 +46,6 @@ const steps = [
 export function InstallationProcess() {
   const isWeb = Platform.OS === 'web';
   const contentWidth = isWeb ? Math.min(1200, width * 0.9) : width * 0.9;
-  const imageSize = isWeb ? contentWidth * 0.45 : contentWidth;
 
   return (
     <ScrollView style={styles.container}>
@@ -59,33 +57,24 @@ export function InstallationProcess() {
           </Text>
         </View>
 
-        <View style={[styles.mainContent, isWeb && styles.webLayout]}>
-          <View style={styles.stepsContainer}>
-            {steps.map((step) => (
-              <View key={step.id} style={styles.stepItem}>
-                <View style={styles.stepHeader}>
-                  <Text style={styles.stepNumber}>{step.id}</Text>
-                  <Text style={styles.stepIcon}>{step.icon}</Text>
-                </View>
-                <View style={styles.stepContent}>
-                  <Text style={styles.stepTitle}>{step.title}</Text>
-                  <Text style={styles.stepDescription}>{step.description}</Text>
-                </View>
+        <View style={styles.stepsContainer}>
+          {steps.map((step) => (
+            <View key={step.id} style={styles.stepItem}>
+              <View style={styles.stepHeader}>
+                <Text style={styles.stepNumber}>{step.id}</Text>
+                <Text style={styles.stepIcon}>{step.icon}</Text>
               </View>
-            ))}
-          </View>
-
-          <View style={styles.imageContainer}>
-            <Image
-              source={{ uri: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&auto=format&fit=crop&q=60' }}
-              style={[styles.image, { width: imageSize }]}
-              resizeMode="cover"
-            />
-            <View style={styles.experienceTag}>
-              <Text style={styles.experienceText}>15+ Anos</Text>
-              <Text style={styles.experienceSubtext}>de experiência</Text>
+              <View style={styles.stepContent}>
+                <Text style={styles.stepTitle}>{step.title}</Text>
+                <Text style={styles.stepDescription}>{step.description}</Text>
+              </View>
             </View>
-          </View>
+          ))}
+        </View>
+
+        <View style={styles.experienceTag}>
+          <Text style={styles.experienceText}>15+ Anos</Text>
+          <Text style={styles.experienceSubtext}>de experiência</Text>
         </View>
       </View>
     </ScrollView>
@@ -117,17 +106,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: 600,
   },
-  mainContent: {
-    gap: 40,
-  },
-  webLayout: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
   stepsContainer: {
-    flex: 1,
+    display: 'flex',
+    flexDirection: Platform.OS === 'web' ? 'row' : 'column',
+    flexWrap: 'wrap',
     gap: 24,
+    justifyContent: 'center',
   },
   stepItem: {
     backgroundColor: 'rgba(123, 104, 238, 0.1)',
@@ -135,6 +119,8 @@ const styles = StyleSheet.create({
     padding: 20,
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
+    width: Platform.OS === 'web' ? '30%' : '100%',
+    minWidth: Platform.OS === 'web' ? 300 : undefined,
   },
   stepHeader: {
     flexDirection: 'row',
@@ -163,20 +149,9 @@ const styles = StyleSheet.create({
     color: '#B8B8E6',
     lineHeight: Platform.OS === 'web' ? 24 : 20,
   },
-  imageContainer: {
-    flex: 1,
-    alignItems: 'center',
-    position: 'relative',
-  },
-  image: {
-    height: undefined,
-    aspectRatio: 4/3,
-    borderRadius: 16,
-  },
   experienceTag: {
-    position: 'absolute',
-    bottom: 20,
-    left: 20,
+    alignSelf: 'center',
+    marginTop: 40,
     backgroundColor: 'rgba(10, 10, 31, 0.9)',
     padding: 16,
     borderRadius: 12,
@@ -187,9 +162,11 @@ const styles = StyleSheet.create({
     fontSize: Platform.OS === 'web' ? 24 : 20,
     fontWeight: 'bold',
     color: '#7B68EE',
+    textAlign: 'center',
   },
   experienceSubtext: {
     fontSize: Platform.OS === 'web' ? 16 : 14,
     color: '#E6E6FA',
+    textAlign: 'center',
   },
 });

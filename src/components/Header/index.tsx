@@ -44,13 +44,19 @@ export function Header() {
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navItem}
-          onPress={() => setIsMenuOpen(false)}
+          onPress={() => {
+            navigation.navigate('Products');
+            setIsMenuOpen(false);
+          }}
         >
           <Text style={styles.navText}>Produtos</Text>
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.navItem}
-          onPress={() => setIsMenuOpen(false)}
+          onPress={() => {
+            navigation.navigate('Services');
+            setIsMenuOpen(false);
+          }}
         >
           <Text style={styles.navText}>Serviços</Text>
         </TouchableOpacity>

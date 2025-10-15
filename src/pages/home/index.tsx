@@ -16,7 +16,7 @@ const products = [
     title: 'Kit Solar Residencial',
     price: 12999.99,
     image: { 
-      uri: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&auto=format&fit=crop&q=60' 
+      uri: 'https://thonilitsz.arq.br/wp-content/uploads/2017/05/20141217100744488.jpg' 
     },
     category: 'Energia Solar',
   },
@@ -34,10 +34,55 @@ const products = [
     title: 'Kit Manutenção Solar',
     price: 299.99,
     image: { 
-      uri: 'https://www.portalsolar.com.br/_next/image?url=https%3A%2F%2Fportalsolar-images.s3.us-east-2.amazonaws.com%2Finstitucional-and-info-production%2Fimages%2F72446a59-d88c-4f29-98b2-b0a9733269a3%2Flimpeza-de-placas-solares.jpg&w=3840&q=100' 
+      uri: 'https://www.aldo.com.br/blog/wp-content/uploads/2019/05/244100-manutencao-de-sistema-de-energia-solar-como-otimizar-esse-servico.jpg' 
     },
     category: 'Manutenção',
   },
+  {
+    id: 4,
+    title: 'Kit Solar Rural',
+    price: 18999.99,
+    image: { 
+      uri: 'https://fortifol.siterapido.rs/wp-content/uploads/sites/59/2022/10/conheca-a-usina-que-gera-energia-solar-em-meio-a-producao-rural-meio-rural-atinge-bons-resultados-na-utilizacao-de-energia-solar.jpg' 
+    },
+    category: 'Energia Solar Rural',
+  },
+  {
+    id: 5,
+    title: 'Kit Solar Apartamento',
+    price: 15999.99,
+    image: { 
+      uri: 'https://www.northsun.com.br/wp-content/uploads/marquise-solar-400x225.jpg' 
+    },
+    category: 'Energia Solar Residencial',
+  },
+  {
+    id: 6,
+    title: 'Sistema Off-Grid Completo',
+    price: 35999.99,
+    image: { 
+      uri: 'https://solardospomares.com.br/wp-content/uploads/2024/12/Qual-Melhor-bateria-de-litio-off-grid-1024x585.jpg' 
+    },
+    category: 'Energia Solar Autônoma',
+  },
+  {
+    id: 7,
+    title: 'Kit Inversor Premium',
+    price: 8999.99,
+    image: { 
+      uri: 'https://acdn-us.mitiendanube.com/stores/003/582/147/products/3-d9d32397222ba454fd17298869866251-1024-1024.jpg' 
+    },
+    category: 'Equipamentos',
+  },
+  {
+    id: 8,
+    title: 'Bateria Solar',
+    price: 12499.99,
+    image: { 
+      uri: 'https://www.aforenergy.com/wp-content/uploads/2025/04/4-1.webp' 
+    },
+    category: 'Armazenamento',
+  }
 ];
 
 export function HomePage() {

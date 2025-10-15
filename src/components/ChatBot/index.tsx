@@ -203,7 +203,7 @@ export function ChatBot() {
         <View style={styles.header}>
           <TouchableOpacity
             style={styles.backButton}
-            onPress={() => navigation.navigate('Home')}
+            onPress={() => navigation.goBack()}
           >
             <Text style={styles.backButtonText}>←</Text>
           </TouchableOpacity>
@@ -213,7 +213,10 @@ export function ChatBot() {
         <ScrollView
           ref={scrollViewRef}
           style={styles.messagesContainer}
-          contentContainerStyle={styles.messagesContent}
+          contentContainerStyle={[
+            styles.messagesContent,
+            { paddingBottom: Platform.OS === 'web' ? 20 : 100 }
+          ]}
           onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
         >
           {messages.map((message) => (
@@ -260,7 +263,7 @@ export function ChatBot() {
                 <View style={styles.endChatContainer}>
                   <TouchableOpacity
                     style={styles.endChatButton}
-                    onPress={() => navigation.navigate('Home')}
+                    onPress={() => navigation.goBack()}
                   >
                     <Text style={styles.endChatButtonText}>Voltar para a Página Inicial</Text>
                   </TouchableOpacity>
@@ -270,7 +273,20 @@ export function ChatBot() {
           ))}
         </ScrollView>
 
-        <View style={styles.inputContainer}>
+        <View style={[
+          styles.inputContainer,
+          Platform.OS !== 'web' && {
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            backgroundColor: '#0A0A1F',
+            paddingBottom: 20,
+            paddingTop: 10,
+            borderTopWidth: 1,
+            borderTopColor: 'rgba(123, 104, 238, 0.2)',
+          }
+        ]}>
           <TextInput
             style={styles.input}
             value={inputText}

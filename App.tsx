@@ -6,6 +6,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { HomePage } from './src/pages/home';
 import { ContactPage } from './src/pages/contact';
 import { ChatPage } from './src/pages/chat';
+import { ProductsPage } from './src/pages/products';
+import { ProductDetailsPage } from './src/pages/products/details';
+import { ServicesPage } from './src/pages/services';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,8 +17,16 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <StatusBar style="light" />
-        <Stack.Navigator>
+        <Stack.Navigator 
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor: '#0A0A1F' }
+          }}
+        >
           <Stack.Screen name="Home" component={HomePage} />
+          <Stack.Screen name="Products" component={ProductsPage} />
+          <Stack.Screen name="ProductDetails" component={ProductDetailsPage} />
+          <Stack.Screen name="Services" component={ServicesPage} />
           <Stack.Screen name="Contact" component={ContactPage} />
           <Stack.Screen name="Chat" component={ChatPage} />
         </Stack.Navigator>
