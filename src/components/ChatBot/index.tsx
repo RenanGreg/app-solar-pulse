@@ -197,8 +197,9 @@ export function ChatBot() {
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={[styles.container, { minHeight: windowHeight }]}
+        style={[styles.container]}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+        enabled
       >
         <View style={styles.header}>
           <TouchableOpacity
@@ -273,20 +274,7 @@ export function ChatBot() {
           ))}
         </ScrollView>
 
-        <View style={[
-          styles.inputContainer,
-          Platform.OS !== 'web' && {
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: '#0A0A1F',
-            paddingBottom: 20,
-            paddingTop: 10,
-            borderTopWidth: 1,
-            borderTopColor: 'rgba(123, 104, 238, 0.2)',
-          }
-        ]}>
+        <View style={styles.inputContainer}>
           <TextInput
             style={styles.input}
             value={inputText}
@@ -295,6 +283,8 @@ export function ChatBot() {
             placeholderTextColor="#B8B8E6"
             onSubmitEditing={handleSend}
             editable={!chatEnded}
+            multiline={false}
+            returnKeyType="send"
           />
           <TouchableOpacity 
             style={[styles.sendButton, chatEnded && styles.sendButtonDisabled]} 
@@ -317,6 +307,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0A0A1F',
+    justifyContent: 'space-between',
   },
   header: {
     flexDirection: 'row',
@@ -352,7 +343,7 @@ const styles = StyleSheet.create({
   },
   messagesContent: {
     padding: 16,
-    paddingBottom: 32,
+    paddingBottom: 100,
   },
   messageWrapper: {
     flexDirection: 'row',
@@ -447,11 +438,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     padding: 16,
+    paddingBottom: Platform.OS === 'ios' ? 30 : 16,
     gap: 8,
     borderTopWidth: 1,
     borderTopColor: 'rgba(123, 104, 238, 0.2)',
-    backgroundColor: 'rgba(10, 10, 31, 0.95)',
-    minHeight: 80,
+    backgroundColor: '#0A0A1F',
+    width: '100%',
   },
   input: {
     flex: 1,
@@ -476,11 +468,6 @@ const styles = StyleSheet.create({
   },
   sendButtonDisabled: { 
     backgroundColor: 'rgba(123, 104, 238, 0.5)',
-    ...Platform.select({
-      web: {
-        cursor: 'not-allowed',
-      },
-    }),
   },
   sendButtonText: {
     color: '#FFFFFF',

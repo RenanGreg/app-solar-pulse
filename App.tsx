@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { defaultScreenOptions } from './src/utils/navigation';
 import { HomePage } from './src/pages/home';
 import { ContactPage } from './src/pages/contact';
 import { ChatPage } from './src/pages/chat';
@@ -18,11 +19,8 @@ export default function App() {
     <SafeAreaProvider>
       <NavigationContainer>
         <StatusBar style="light" />
-        <Stack.Navigator 
-          screenOptions={{
-            headerShown: false,
-            contentStyle: { backgroundColor: '#0A0A1F' }
-          }}
+                <Stack.Navigator 
+          screenOptions={defaultScreenOptions}
         >
           <Stack.Screen name="Home" component={HomePage} />
           <Stack.Screen name="Products" component={ProductsPage} />

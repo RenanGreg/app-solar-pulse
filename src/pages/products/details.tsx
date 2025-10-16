@@ -94,7 +94,7 @@ const productDetails = {
     ]
   },
   'Sistema Off-Grid Completo': {
-    description: 'Sistema completo para independência energética total, ideal para locais sem acesso à rede elétrica. Inclui painéis solares, baterias de alta capacidade e sistema de backup.',
+    description: ' Sistema off-grid é um sistema de geração de energia elétrica que opera de forma totalmente autônoma, sem conexão com a rede pública de distribuição de energia elétrica. Ele é ideal para locais remotos sem acesso à rede ou para pessoas que buscam independência total do fornecimento convencional',
     benefits: [
       'Independência total da rede',
       'Baterias de longa duração',
@@ -110,8 +110,8 @@ const productDetails = {
       'Testes e ativação'
     ]
   },
-  'Kit Inversor Premium': {
-    description: 'Inversor solar de alta performance para máxima eficiência na conversão de energia. Equipamento premium com tecnologia de ponta e monitoramento avançado.',
+  'Inversor Solar': {
+    description: 'O inversor solar é um item essencial do kit de energia solar, com função de converter a energia elétrica gerada pelos painéis de corrente contínua (CC) para corrente alternada (CA), possibilitando o uso da energia elétrica gerada pela energia solar fotovoltaica.',
     benefits: [
       'Alta eficiência de conversão',
       'Monitoramento em tempo real',
@@ -175,6 +175,13 @@ export function ProductDetailsPage() {
             
             <Text style={styles.description}>{details.description}</Text>
             
+            <TouchableOpacity 
+              style={[styles.button, styles.earlyButton]}
+              onPress={() => navigation.navigate('Contact')}
+            >
+              <Text style={styles.buttonText}>Solicitar Orçamento →</Text>
+            </TouchableOpacity>
+
             <Text style={styles.sectionTitle}>Benefícios</Text>
             <View style={styles.listContainer}>
               {details.benefits.map((benefit, index) => (
@@ -194,13 +201,6 @@ export function ProductDetailsPage() {
                 </View>
               ))}
             </View>
-            
-            <TouchableOpacity 
-              style={styles.button}
-              onPress={() => navigation.navigate('Contact')}
-            >
-              <Text style={styles.buttonText}>Solicitar Orçamento →</Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </ParallaxScrollView>
@@ -293,6 +293,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
     marginTop: 16,
+  },
+  earlyButton: {
+    marginVertical: 24,
   },
   buttonText: {
     color: '#7B68EE',

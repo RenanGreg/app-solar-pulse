@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Animated } from 'react-native';
+import { useScreenTransition } from '../../hooks/useScreenTransition';
 import { Header } from '../../components/Header';
 import { FeaturedCarousel } from '../../components/FeaturedCarousel';
 import { ParallaxScrollView } from '../../components/ParallaxScrollView';
@@ -50,7 +51,7 @@ const products = [
     title: 'Kit Solar Apartamento',
     price: 8999.99,
     image: { 
-      uri: 'https://www.northsun.com.br/wp-content/uploads/marquise-solar-400x225.jpg' 
+      uri: 'https://energiawise.com.br/wp-content/uploads/2018/02/energia-solar-apartamento-energia-wise.jpg' 
     },
     category: 'Energia Solar',
   },
@@ -59,25 +60,25 @@ const products = [
     title: 'Sistema Off-Grid Completo',
     price: 24999.99,
     image: { 
-      uri:  'https://solardospomares.com.br/wp-content/uploads/2024/12/Qual-Melhor-bateria-de-litio-off-grid-1024x585.jpg' 
+      uri:  'https://solardospomares.com.br/wp-content/uploads/2024/12/sistema-fotovoltaico-off-grid-1024x585.jpg' 
     },
     category: 'Energia Solar',
   },
   {
     id: 7,
-    title: 'Kit Inversor Premium',
+    title: 'Inversor Solar',
     price: 4999.99,
     image: { 
-      uri: 'https://acdn-us.mitiendanube.com/stores/003/582/147/products/3-d9d32397222ba454fd17298869866251-1024-1024.jpg'
+      uri: 'https://blog.solarpowerenergy.com.br/wp-content/uploads/2022/03/inversor-solar.png' 
     },
     category: 'Equipamentos',
   },
   {
     id: 8,
-    title: 'Bateria Solar 5kWh',
+    title: 'Bateria Solar',
     price: 7999.99,
     image: { 
-      uri: 'https://www.aforenergy.com/wp-content/uploads/2025/04/4-1.webp' 
+      uri: 'https://ixymyhazbhztpjnlxmbd.supabase.co/storage/v1/object/images/generated/baterias-solares-modulares-363.webp' 
     },
     category: 'Equipamentos',
   }
@@ -85,9 +86,10 @@ const products = [
 
 export function ProductsPage() {
   const navigation = useNavigation<NavigationProps>();
+  const { animatedStyle } = useScreenTransition();
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <ParallaxScrollView>
         <View style={styles.header}>
           <Header />
@@ -100,7 +102,7 @@ export function ProductsPage() {
           <FeaturedCarousel products={products} />
         </View>
       </ParallaxScrollView>
-    </View>
+    </Animated.View>
   );
 }
 
