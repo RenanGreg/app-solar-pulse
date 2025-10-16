@@ -72,41 +72,6 @@ export const FeaturedCarousel = forwardRef<CarouselInstance, FeaturedCarouselPro
             />
           ))}
         </View>
-        
-        <View style={styles.navigationButtons}>
-          <TouchableOpacity
-            style={[styles.navButton, currentIndex === 0 && styles.navButtonDisabled]}
-            onPress={() => {
-              if (currentIndex > 0) {
-                scrollViewRef.current?.scrollTo({
-                  x: (ITEM_WIDTH + 20) * (currentIndex - 1),
-                  animated: true,
-                });
-              }
-            }}
-            disabled={currentIndex === 0}
-          >
-            <Text style={styles.navButtonText}>←</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={[
-              styles.navButton,
-              currentIndex === products.length - 1 && styles.navButtonDisabled,
-            ]}
-            onPress={() => {
-              if (currentIndex < products.length - 1) {
-                scrollViewRef.current?.scrollTo({
-                  x: (ITEM_WIDTH + 20) * (currentIndex + 1),
-                  animated: true,
-                });
-              }
-            }}
-            disabled={currentIndex === products.length - 1}
-          >
-            <Text style={styles.navButtonText}>→</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -152,41 +117,5 @@ const styles = StyleSheet.create({
   paginationDotActive: {
     backgroundColor: '#7B68EE',
     transform: [{ scale: 1.2 }],
-  },
-  navigationButtons: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 20,
-    gap: 16,
-  },
-  navButton: {
-    backgroundColor: 'rgba(123, 104, 238, 0.1)',
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
-    ...Platform.select({
-      web: {
-        cursor: 'pointer',
-        transition: 'all 0.3s ease',
-      },
-    }),
-  },
-  navButtonDisabled: {
-    opacity: 0.5,
-    ...Platform.select({
-      web: {
-        cursor: 'not-allowed',
-      },
-    }),
-  },
-  navButtonText: {
-    color: '#7B68EE',
-    fontSize: 20,
-    fontWeight: 'bold',
   },
 });

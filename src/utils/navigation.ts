@@ -1,15 +1,21 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Platform } from 'react-native';
 
 export const defaultScreenOptions: NativeStackNavigationOptions = {
   headerShown: false,
   contentStyle: { backgroundColor: '#0A0A1F' },
-  animation: 'slide_from_right',
-  animationDuration: 300,
+  animation: Platform.select({
+    ios: 'slide_from_right',
+    android: 'slide_from_right',
+    default: 'slide_from_right',
+  }),
+  animationDuration: 350,
   gestureEnabled: true,
   gestureDirection: 'horizontal',
   presentation: 'card',
   fullScreenGestureEnabled: true,
   animationTypeForReplace: 'push',
+  freezeOnBlur: true,
 };
 
 export const slideAnimation = {

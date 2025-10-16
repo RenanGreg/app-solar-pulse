@@ -8,11 +8,14 @@ import {
   ScrollView,
   Alert,
   Platform,
+  Animated,
 } from 'react-native';
 import { Header } from '../../components/Header';
 import { ParallaxScrollView } from '../../components/ParallaxScrollView';
+import { useScreenTransition } from '../../hooks/useScreenTransition';
 
 export function BudgetPage() {
+  const { animatedStyle } = useScreenTransition();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,7 +48,7 @@ export function BudgetPage() {
   };
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <ParallaxScrollView>
         <View style={styles.header}>
           <Header />
@@ -147,7 +150,7 @@ export function BudgetPage() {
           </View>
         </View>
       </ParallaxScrollView>
-    </View>
+    </Animated.View>
   );
 }
 

@@ -12,6 +12,7 @@ const services = [
     price: 'A partir de R$ 12.000',
     icon: 'home-lightning-bolt',
     accentColor: '#7B68EE',
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&q=90&auto=format&fit=crop',
     features: [
       'Projeto personalizado',
       'Instalação completa',
@@ -26,6 +27,7 @@ const services = [
     price: 'A partir de R$ 25.000',
     icon: 'office-building',
     accentColor: '#4CAF50',
+    image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200&q=90&auto=format&fit=crop',
     features: [
       'Análise de demanda',
       'Projeto otimizado',
@@ -40,6 +42,7 @@ const services = [
     price: 'A partir de R$ 350',
     icon: 'tools',
     accentColor: '#FF9800',
+    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=90&auto=format&fit=crop',
     features: [
       'Limpeza especializada',
       'Inspeção técnica',
@@ -54,6 +57,7 @@ const services = [
     price: 'A partir de R$ 18.000',
     icon: 'barn',
     accentColor: '#8BC34A',
+    image: 'https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?w=1200&q=90&auto=format&fit=crop',
     features: [
       'Projeto adaptado ao campo',
       'Sistema robusto',
@@ -68,6 +72,7 @@ const services = [
     price: 'A partir de R$ 15.000',
     icon: 'city-variant',
     accentColor: '#03A9F4',
+    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=90&auto=format&fit=crop',
     features: [
       'Aprovação condominial',
       'Instalação discreta',
@@ -82,6 +87,7 @@ const services = [
     price: 'A partir de R$ 35.000',
     icon: 'power-plug-off',
     accentColor: '#9C27B0',
+    image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=1200&q=90&auto=format&fit=crop',
     features: [
       'Baterias de alta capacidade',
       'Sistema autônomo',
@@ -119,6 +125,7 @@ export function SolarServices() {
               features={service.features}
               icon={service.icon}
               accentColor={service.accentColor}
+              image={service.image}
             />
           ))}
         </View>

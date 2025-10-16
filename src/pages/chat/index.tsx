@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import { ChatBot } from '../../components/ChatBot';
+import { useScreenTransition } from '../../hooks/useScreenTransition';
 
 export function ChatPage() {
+  const { animatedStyle } = useScreenTransition();
+  
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <ChatBot />
-    </View>
+    </Animated.View>
   );
 }
 

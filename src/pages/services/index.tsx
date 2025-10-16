@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text, Platform } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Platform, Animated } from 'react-native';
+import { useScreenTransition } from '../../hooks/useScreenTransition';
 import { Header } from '../../components/Header';
 import { SolarServices } from '../../components/SolarServices';
 import { InstallationProcess } from '../../components/InstallationProcess';
@@ -9,9 +10,10 @@ import type { NavigationProps } from '../../types/navigation';
 
 export function ServicesPage() {
   const navigation = useNavigation<NavigationProps>();
+  const { animatedStyle } = useScreenTransition();
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <ParallaxScrollView>
         <View style={styles.header}>
           <Header />
@@ -19,7 +21,7 @@ export function ServicesPage() {
         <SolarServices />
         <InstallationProcess />
       </ParallaxScrollView>
-    </View>
+    </Animated.View>
   );
 }
 

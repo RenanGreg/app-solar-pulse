@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Linking } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Linking, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProps } from '../../types/navigation';
 import { Header } from '../../components/Header';
 import { ParallaxScrollView } from '../../components/ParallaxScrollView';
+import { useScreenTransition } from '../../hooks/useScreenTransition';
 
 export function ContactPage() {
   const navigation = useNavigation<NavigationProps>();
+  const { animatedStyle } = useScreenTransition();
   const [email, setEmail] = useState('');
 
   const handleSubmit = () => {
@@ -35,7 +37,7 @@ export function ContactPage() {
   };
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, animatedStyle]}>
       <ParallaxScrollView>
         <View style={styles.headerWrapper}>
           <Header />
@@ -76,7 +78,7 @@ export function ContactPage() {
           </View>
         </View>
       </ParallaxScrollView>
-    </View>
+    </Animated.View>
   );
 }
 

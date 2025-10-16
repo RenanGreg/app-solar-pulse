@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, Animated } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, Animated, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NavigationProps } from '../../types/navigation';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ type ServiceCardProps = {
   features: string[];
   icon?: string;
   accentColor?: string;
+  image?: string;
 };
 
 export function ServiceCard({ 
@@ -19,7 +20,8 @@ export function ServiceCard({
   price, 
   features, 
   icon = 'solar-panel', 
-  accentColor = '#7B68EE' 
+  accentColor = '#7B68EE',
+  image
 }: ServiceCardProps) {
   const navigation = useNavigation<NavigationProps>();
   const scaleAnim = React.useRef(new Animated.Value(1)).current;
@@ -58,12 +60,24 @@ export function ServiceCard({
 
   return (
     <Animated.View style={[styles.card, { transform: [{ scale: scaleAnim }] }]}>
-      <View style={[styles.iconContainer, { backgroundColor: `${accentColor}20` }]}>
-        <Animated.View style={{ transform: [{ scale: iconScaleAnim }] }}>
-          <MaterialCommunityIcons name={icon as any} size={32} color={accentColor} />
-        </Animated.View>
+      {image && (
+        <View style={styles.imageContainer}>
+          <Image 
+            source={{ uri: image }} 
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <View style={styles.imageOverlay} />
+        </View>
+      )}
+      <View style={styles.titleRow}>
+        <View style={[styles.iconContainer, { backgroundColor: `${accentColor}20` }]}>
+          <Animated.View style={{ transform: [{ scale: iconScaleAnim }] }}>
+            <MaterialCommunityIcons name={icon as any} size={28} color={accentColor} />
+          </Animated.View>
+        </View>
+        <Text style={styles.title}>{title}</Text>
       </View>
-      <Text style={styles.title}>{title}</Text>
       <Text style={styles.description}>{description}</Text>
       <Text style={[styles.price, { color: accentColor }]}>{price}</Text>
       <View style={styles.featuresList}>
@@ -98,7 +112,9 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
     borderRadius: 24,
-    padding: Platform.OS === 'web' ? 36 : 28,
+    paddingTop: 220,
+    paddingHorizontal: Platform.OS === 'web' ? 36 : 28,
+    paddingBottom: Platform.OS === 'web' ? 36 : 28,
     borderWidth: 1,
     borderColor: 'rgba(123, 104, 238, 0.3)',
     width: Platform.OS === 'web' ? '30%' : '100%',
@@ -115,11 +131,40 @@ const styles = StyleSheet.create({
       },
     } : {}),
   },
+  imageContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 200,
+    overflow: 'hidden',
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#1a1a2e',
+  },
+  imageOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(10, 10, 31, 0.15)',
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 14,
+    gap: 12,
+  },
   title: {
     fontSize: Platform.OS === 'web' ? 28 : 24,
     fontWeight: 'bold',
     color: '#E6E6FA',
-    marginBottom: 14,
+    flex: 1,
   },
   description: {
     fontSize: Platform.OS === 'web' ? 17 : 15,
@@ -187,11 +232,15 @@ const styles = StyleSheet.create({
     letterSpacing: 1.2,
   },
   iconContainer: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
   },
 });
