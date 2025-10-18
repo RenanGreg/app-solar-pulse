@@ -287,7 +287,17 @@ export function ProductsPage() {
           </Text>
 
           {/* Carrossel de produtos filtrados */}
-          <FeaturedCarousel products={filteredProducts} />
+          {filteredProducts.length > 0 ? (
+            <FeaturedCarousel key={selectedCategory} products={filteredProducts} />
+          ) : (
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyStateText}>😕</Text>
+              <Text style={styles.emptyStateTitle}>Nenhum produto encontrado</Text>
+              <Text style={styles.emptyStateSubtitle}>
+                Tente selecionar outra categoria
+              </Text>
+            </View>
+          )}
         </View>
       </ParallaxScrollView>
     </Animated.View>
@@ -367,5 +377,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
     fontStyle: 'italic',
+  },
+  emptyState: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 60,
+    paddingHorizontal: 20,
+  },
+  emptyStateText: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  emptyStateTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#E6E6FA',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  emptyStateSubtitle: {
+    fontSize: 16,
+    color: '#B8B8E6',
+    textAlign: 'center',
   },
 });

@@ -259,7 +259,7 @@ export function ChatBot() {
                 <View style={styles.endChatContainer}>
                   <TouchableOpacity
                     style={styles.endChatButton}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate('Home')}
                   >
                     <Text style={styles.endChatButtonText}>Voltar para a Página Inicial</Text>
                   </TouchableOpacity>
