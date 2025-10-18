@@ -49,10 +49,10 @@ export function BudgetPage() {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
+      <View style={styles.header}>
+        <Header />
+      </View>
       <ParallaxScrollView>
-        <View style={styles.header}>
-          <Header />
-        </View>
         <View style={styles.content}>
           <Text style={styles.title}>Solicite um Orçamento</Text>
           <Text style={styles.subtitle}>
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
   },
   header: {
     position: 'relative',
-    zIndex: 100,
+    zIndex: 1000,
+    elevation: 5,
   },
   content: {
     padding: 20,

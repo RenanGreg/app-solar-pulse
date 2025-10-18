@@ -14,10 +14,10 @@ export function ServicesPage() {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
+      <View style={styles.header}>
+        <Header />
+      </View>
       <ParallaxScrollView>
-        <View style={styles.header}>
-          <Header />
-        </View>
         <SolarServices />
         <InstallationProcess />
       </ParallaxScrollView>
@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
   },
   header: {
     position: 'relative',
-    zIndex: 1,
+    zIndex: 1000,
+    elevation: 5,
   },
   backButton: {
     position: 'absolute',

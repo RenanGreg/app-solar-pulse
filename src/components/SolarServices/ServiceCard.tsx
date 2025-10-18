@@ -95,7 +95,7 @@ export function ServiceCard({
       </View>
       <TouchableOpacity 
         style={[styles.button, { borderColor: `${accentColor}40` }]}
-        onPress={() => navigation.navigate('Contact')}
+        onPress={() => navigation.navigate('Budget')}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
       >

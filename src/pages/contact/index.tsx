@@ -38,10 +38,10 @@ export function ContactPage() {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
+      <View style={styles.headerWrapper}>
+        <Header />
+      </View>
       <ParallaxScrollView>
-        <View style={styles.headerWrapper}>
-          <Header />
-        </View>
         <View style={styles.content}>
           <Text style={styles.title}>Pronto para economizar?</Text>
           <Text style={styles.subtitle}>
@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     position: 'relative',
-    zIndex: 100,
+    zIndex: 1000,
+    elevation: 5,
   },
   content: {
     padding: 20,

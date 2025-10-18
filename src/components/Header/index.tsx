@@ -103,15 +103,6 @@ export function Header() {
         >
           <Text style={styles.chatButtonText}>💬 Chat</Text>
         </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.navItem, styles.budgetButton]} 
-          onPress={() => {
-            navigation.navigate('Budget');
-            setIsMenuOpen(false);
-          }}
-        >
-          <Text style={styles.budgetButtonText}>📝 Orçamento</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -119,10 +110,24 @@ export function Header() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(10, 10, 31, 0.95)',
+    backgroundColor: 'rgba(10, 10, 31, 0.98)',
     paddingTop: Platform.OS === 'web' ? spacing(16) : 0,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(123, 104, 238, 0.2)',
+    ...Platform.select({
+      web: {
+        backdropFilter: 'blur(10px)',
+      },
+      android: {
+        elevation: 5,
+      },
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+      },
+    }),
   },
   topBar: {
     flexDirection: 'row',

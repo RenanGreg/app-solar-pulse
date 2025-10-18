@@ -54,11 +54,13 @@ export function HomePage() {
   return (
     <GestureHandlerRootView style={styles.container}>
       <Animated.View style={[styles.mainContainer, animatedStyle]}>
-        <ParallaxScrollView>
+        <View style={styles.header}>
           <Header />
-          <Banner onRequestQuote={() => navigation.navigate('Contact')} />
+        </View>
+        <ParallaxScrollView>
+          <Banner onRequestQuote={() => navigation.navigate('Budget')} />
           <FeaturedCarousel products={products} />
-          <SolarServices />
+          <SolarServices limitToMain={true} />
           <InstallationProcess />
         </ParallaxScrollView>
       </Animated.View>
@@ -74,5 +76,10 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     position: 'relative',
+  },
+  header: {
+    position: 'relative',
+    zIndex: 1000,
+    elevation: 5,
   },
 });

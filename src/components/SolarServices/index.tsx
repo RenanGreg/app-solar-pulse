@@ -7,12 +7,12 @@ import type { NavigationProps } from '../../types/navigation';
 const services = [
   {
     id: '1',
-    title: 'Residencial',
+    title: 'Instalação Residencial', 
     description: 'Sistema fotovoltaico completo para sua casa',
     price: 'A partir de R$ 12.000',
     icon: 'home-lightning-bolt',
     accentColor: '#7B68EE',
-    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&q=90&auto=format&fit=crop',
+    image: 'https://media.gazetadopovo.com.br/2023/12/08143348/Quase-70porcento-dos-brasileiros-ja-pensaram-em-ter-energia-solar-residencial-960x540.jpg',
     features: [
       'Projeto personalizado',
       'Instalação completa',
@@ -22,12 +22,12 @@ const services = [
   },
   {
     id: '2',
-    title: 'Comercial',
+    title: 'Instalção Comercial',
     description: 'Soluções para empresas e indústrias',
     price: 'A partir de R$ 25.000',
     icon: 'office-building',
     accentColor: '#4CAF50',
-    image: 'https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=1200&q=90&auto=format&fit=crop',
+    image: 'https://sunwattssolar.com.br/wp-content/uploads/2022/03/instalacao-de-placas-solares.jpg',
     features: [
       'Análise de demanda',
       'Projeto otimizado',
@@ -42,7 +42,7 @@ const services = [
     price: 'A partir de R$ 350',
     icon: 'tools',
     accentColor: '#FF9800',
-    image: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=90&auto=format&fit=crop',
+    image: 'https://images.tcdn.com.br/img/img_prod/1089437/noticia_50018099566425dcfc354c.jpg',
     features: [
       'Limpeza especializada',
       'Inspeção técnica',
@@ -57,7 +57,7 @@ const services = [
     price: 'A partir de R$ 18.000',
     icon: 'barn',
     accentColor: '#8BC34A',
-    image: 'https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?w=1200&q=90&auto=format&fit=crop',
+    image: 'https://static.wixstatic.com/media/9fcda7_b5e7ddca117347f99ba6b36a6c2a0e91~mv2.jpg/v1/fill/w_670,h_374,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/9fcda7_b5e7ddca117347f99ba6b36a6c2a0e91~mv2.jpg',
     features: [
       'Projeto adaptado ao campo',
       'Sistema robusto',
@@ -72,7 +72,7 @@ const services = [
     price: 'A partir de R$ 15.000',
     icon: 'city-variant',
     accentColor: '#03A9F4',
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=90&auto=format&fit=crop',
+    image: 'https://artigonal.com.br/wp-content/uploads/2025/04/instalacao-de-placa-solar-em-apartamento-sr-power.webp',
     features: [
       'Aprovação condominial',
       'Instalação discreta',
@@ -87,7 +87,7 @@ const services = [
     price: 'A partir de R$ 35.000',
     icon: 'power-plug-off',
     accentColor: '#9C27B0',
-    image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=1200&q=90&auto=format&fit=crop',
+    image: 'https://sunergia.com.br/blog/wp-content/uploads/2024/12/instalacao-manutencao-e-suporte-em-energia-solar-fotovoltaica-1-1024x576-png.webp',
     features: [
       'Baterias de alta capacidade',
       'Sistema autônomo',
@@ -95,10 +95,109 @@ const services = [
       'Monitoramento 24/7',
     ],
   },
+  {
+    id: '7',
+    title: 'Monitoramento e Análise',
+    description: 'Acompanhamento da performance do seu sistema',
+    price: 'A partir de R$ 199/mês',
+    icon: 'chart-line',
+    accentColor: '#00BCD4',
+    image: 'https://holu.com.br/wp-content/uploads/2024/02/26-1024x512.png',
+    features: [
+      'Dashboard em tempo real',
+      'Relatórios mensais',
+      'Alertas de anomalias',
+      'Otimização contínua',
+    ],
+  },
+  {
+    id: '8',
+    title: 'Expansão de Sistema',
+    description: 'Amplie seu sistema solar existente',
+    price: 'A partir de R$ 8.000',
+    icon: 'plus-circle',
+    accentColor: '#FFC107',
+    image: 'https://ecoa.org.br/wp-content/uploads/2020/01/energia-solar-fotovoltaica-geracao-distribuida-via-unsplash-e1578942670112.jpg',
+    features: [
+      'Análise de compatibilidade',
+      'Instalação de novas placas',
+      'Reconfiguração do sistema',
+      'Testes de integração',
+    ],
+  },
+  {
+    id: '9',
+    title: 'Consultoria Energética',
+    description: 'Análise completa de viabilidade e economia',
+    price: 'A partir de R$ 500',
+    icon: 'account-tie',
+    accentColor: '#E91E63',
+    image: 'https://solucoes.edp.com.br/media/0rvgn1cf/edp-imagem-pauta590.webp',
+    features: [
+      'Estudo de viabilidade',
+      'Análise de economia',
+      'Projeto personalizado',
+      'Orientação técnica',
+    ],
+  },
+  {
+    id: '10',
+    title: 'Aquecimento Solar',
+    description: 'Sistema de aquecimento de água por energia solar',
+    price: 'A partir de R$ 6.500',
+    icon: 'water-boiler',
+    accentColor: '#FF5722',
+    image: 'https://www.soletrol.com.br/layout/imagens/home/principais-aplicacoes/aquecedor-solar-residencia-1.jpg',
+    features: [
+      'Coletores solares térmicos',
+      'Reservatório térmico',
+      'Instalação completa',
+      'Economia na conta de gás',
+    ],
+  },
+  {
+    id: '11',
+    title: 'Retrofitting Solar',
+    description: 'Modernização de sistemas antigos',
+    price: 'A partir de R$ 5.000',
+    icon: 'refresh',
+    accentColor: '#009688',
+    image: 'https://www.shutterstock.com/shutterstock/photos/2450053205/display_1500/stock-photo-professional-electric-engineers-survey-and-inspect-solar-panels-installation-on-the-factory-metal-2450053205.jpg',
+    features: [
+      'Atualização de inversores',
+      'Substituição de equipamentos',
+      'Melhoria de eficiência',
+      'Garantia estendida',
+    ],
+  },
+  {
+    id: '12',
+    title: 'Carregador Solar EV',
+    description: 'Carregue seu veículo elétrico com energia solar',
+    price: 'A partir de R$ 22.000',
+    icon: 'ev-station',
+    accentColor: '#3F51B5',
+    image: 'https://ekkogreen.com.br/wp-content/uploads/2023/09/modular-solar-EV-charger-1.webp',
+    features: [
+      'Estação de carregamento',
+      'Integração com sistema solar',
+      'Carregamento inteligente',
+      'App de controle',
+    ],
+  },
 ];
 
-export function SolarServices() {
+type SolarServicesProps = {
+  limitToMain?: boolean;
+};
+
+export function SolarServices({ limitToMain = false }: SolarServicesProps) {
   const navigation = useNavigation<NavigationProps>();
+
+  // Se limitToMain for true, mostra apenas Residencial, Comercial e Rural (ids 1, 2, 4)
+  const displayedServices = limitToMain 
+    ? services.filter(service => ['1', '2', '4'].includes(service.id))
+    : services;
 
   return (
     <ScrollView style={styles.container}>
@@ -116,7 +215,7 @@ export function SolarServices() {
         </View>
 
         <View style={styles.servicesGrid}>
-          {services.map((service) => (
+          {displayedServices.map((service) => (
             <ServiceCard
               key={service.id}
               title={service.title}
@@ -129,6 +228,17 @@ export function SolarServices() {
             />
           ))}
         </View>
+        
+        {limitToMain && (
+          <View style={styles.viewAllContainer}>
+            <TouchableOpacity 
+              style={styles.viewAllButton}
+              onPress={() => navigation.navigate('Services')}
+            >
+              <Text style={styles.viewAllButtonText}>Ver Todos os Serviços →</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         
         <View style={styles.bottomCta}>
           <Text style={styles.ctaText}>
@@ -201,6 +311,37 @@ const styles = StyleSheet.create({
     gap: 32,
     justifyContent: 'center',
     marginBottom: 80,
+  },
+  viewAllContainer: {
+    alignItems: 'center',
+    marginBottom: 60,
+    marginTop: -40,
+  },
+  viewAllButton: {
+    backgroundColor: 'rgba(123, 104, 238, 0.15)',
+    paddingVertical: Platform.OS === 'web' ? 16 : 14,
+    paddingHorizontal: Platform.OS === 'web' ? 32 : 28,
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: '#7B68EE',
+    alignItems: 'center',
+    ...Platform.select({
+      web: {
+        transition: 'all 0.3s ease',
+        cursor: 'pointer',
+        ':hover': {
+          backgroundColor: '#7B68EE',
+          transform: 'translateY(-2px)',
+          boxShadow: '0 8px 20px rgba(123,104,238,0.4)',
+        },
+      },
+    }),
+  },
+  viewAllButtonText: {
+    color: '#E6E6FA',
+    fontSize: Platform.OS === 'web' ? 16 : 15,
+    fontWeight: 'bold',
+    letterSpacing: 1,
   },
   bottomCta: {
     backgroundColor: 'rgba(123, 104, 238, 0.08)',

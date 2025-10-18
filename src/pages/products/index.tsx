@@ -245,10 +245,10 @@ export function ProductsPage() {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
+      <View style={styles.header}>
+        <Header />
+      </View>
       <ParallaxScrollView>
-        <View style={styles.header}>
-          <Header />
-        </View>
         <View style={styles.content}>
           <Text style={styles.title}>Nossos Produtos</Text>
           <Text style={styles.subtitle}>
@@ -301,7 +301,8 @@ const styles = StyleSheet.create({
   },
   header: {
     position: 'relative',
-    zIndex: 1,
+    zIndex: 1000,
+    elevation: 5,
   },
   content: {
     padding: 20,

@@ -428,10 +428,10 @@ export function ProductDetailsPage() {
 
   return (
     <Animated.View style={[styles.container, animatedStyle]}>
+      <View style={styles.headerWrapper}>
+        <Header />
+      </View>
       <ParallaxScrollView>
-        <View style={styles.headerWrapper}>
-          <Header />
-        </View>
         <ScrollView style={styles.content}>
           <Image source={image} style={styles.image} resizeMode="cover" />
           <View style={styles.categoryTag}>
@@ -451,7 +451,7 @@ export function ProductDetailsPage() {
             
             <TouchableOpacity 
               style={[styles.button, styles.earlyButton]}
-              onPress={() => navigation.navigate('Contact')}
+              onPress={() => navigation.navigate('Budget')}
             >
               <Text style={styles.buttonText}>Solicitar Orçamento →</Text>
             </TouchableOpacity>
@@ -489,7 +489,8 @@ const styles = StyleSheet.create({
   },
   headerWrapper: {
     position: 'relative',
-    zIndex: 100,
+    zIndex: 1000,
+    elevation: 5,
   },
   content: {
     flex: 1,
