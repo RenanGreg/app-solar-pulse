@@ -73,10 +73,12 @@ export function ContactPage() {
             </TouchableOpacity>
             
             <TouchableOpacity style={styles.contactButton} onPress={handleLocation}>
-              <Text style={styles.contactButtonText}>�� Localização</Text>
+              <Text style={styles.contactButtonText}>📍 Localização</Text>
             </TouchableOpacity>
           </View>
         </View>
+        {/* Espaçamento extra para não sobrepor controles do celular */}
+        <View style={styles.bottomSpacer} />
       </ParallaxScrollView>
     </Animated.View>
   );
@@ -95,6 +97,10 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     alignItems: 'center',
+    paddingBottom: Platform.OS === 'web' ? 20 : 40,
+  },
+  bottomSpacer: {
+    height: Platform.OS === 'web' ? 40 : 100,
   },
   title: {
     fontSize: Platform.OS === 'web' ? 36 : 28,
@@ -147,6 +153,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 400,
     justifyContent: 'center',
+    marginBottom: Platform.OS === 'web' ? 0 : 20,
   },
   contactButton: {
     backgroundColor: 'rgba(230, 230, 250, 0.05)',

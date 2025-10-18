@@ -149,6 +149,8 @@ export function BudgetPage() {
             </TouchableOpacity>
           </View>
         </View>
+        {/* Espaçamento extra para não sobrepor controles do celular */}
+        <View style={styles.bottomSpacer} />
       </ParallaxScrollView>
     </Animated.View>
   );
@@ -166,6 +168,10 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
+    paddingBottom: Platform.OS === 'web' ? 20 : 40,
+  },
+  bottomSpacer: {
+    height: Platform.OS === 'web' ? 40 : 100,
   },
   title: {
     fontSize: 24,
@@ -215,6 +221,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: Platform.OS === 'web' ? 0 : 20,
     borderWidth: 1,
     borderColor: 'rgba(46, 204, 113, 0.3)',
   },

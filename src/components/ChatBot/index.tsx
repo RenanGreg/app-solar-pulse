@@ -30,80 +30,46 @@ interface Option {
 }
 
 const initialOptions: Option[] = [
-  { id: '1', text: 'Quero fazer um orçamento', action: 'orçamento' },
-  { id: '2', text: 'Informações sobre energia solar', action: 'energia solar' },
-  { id: '3', text: 'Custos e economia', action: 'economia' },
-  { id: '4', text: 'Processo de instalação', action: 'instalação' },
-  { id: '5', text: 'Falar com um atendente', action: 'atendente' },
+  { id: '1', text: 'Quanto custa?', action: 'preco' },
+  { id: '2', text: 'Como funciona a energia solar?', action: 'funcionamento' },
+  { id: '3', text: 'Quanto vou economizar?', action: 'economia' },
+  { id: '4', text: 'Quanto tempo demora a instalação?', action: 'tempo' },
+  { id: '5', text: 'Solicitar orçamento', action: 'orcamento' },
 ];
 
 const initialMessages: Message[] = [
   {
     id: '1',
-    text: 'Olá! Sou o assistente virtual da Pulse Robot. Como posso ajudar você hoje?',
+    text: 'Olá! 👋 Estou aqui para tirar suas dúvidas sobre energia solar. Escolha uma opção abaixo:',
     sender: 'bot',
     options: initialOptions,
   },
 ];
 
-const priceRanges = {
-  'orçamento residencial': {
-    text: 'Para instalações residenciais, o investimento médio é:\n\n' +
-          '• Sistema 3kWp: R$ 15.000 a R$ 18.000\n' +
-          '• Sistema 5kWp: R$ 22.000 a R$ 25.000\n' +
-          '• Sistema 8kWp: R$ 35.000 a R$ 40.000\n\n' +
-          'Estes valores incluem equipamentos e instalação completa.',
-    isPrice: true,
-  },
-  'orçamento comercial': {
-    text: 'Para instalações comerciais, o investimento médio é:\n\n' +
-          '• Sistema 10kWp: R$ 45.000 a R$ 50.000\n' +
-          '• Sistema 20kWp: R$ 85.000 a R$ 95.000\n' +
-          '• Sistema 30kWp: R$ 125.000 a R$ 140.000\n\n' +
-          'Estes valores incluem projeto completo e homologação.',
-    isPrice: true,
-  },
-  'orçamento industrial': {
-    text: 'Para instalações industriais, o investimento médio é:\n\n' +
-          '• Sistema 50kWp: R$ 200.000 a R$ 230.000\n' +
-          '• Sistema 100kWp: R$ 380.000 a R$ 420.000\n' +
-          '• Sistema 200kWp: R$ 700.000 a R$ 800.000\n\n' +
-          'Estes valores incluem projeto executivo e suporte técnico.',
-    isPrice: true,
-  },
-};
-
-const botResponses = {
-  default: 'Como posso ajudar você? Escolha uma das opções abaixo:',
-  keywords: {
-    'orçamento': 'Selecione o tipo de instalação para ver os valores aproximados:',
-    'energia solar': 'Oferecemos soluções completas em energia solar, incluindo instalação e manutenção de painéis solares. Você gostaria de saber mais sobre:',
-    'economia': 'Com energia solar, você pode economizar até 95% na sua conta de energia elétrica! Quer saber mais detalhes sobre:',
-    'instalação': 'Nossa equipe especializada realiza a instalação completa do sistema, seguindo todas as normas técnicas. Gostaria de saber mais sobre:',
-    'atendente': 'Claro! Vou conectar você com um de nossos especialistas. Por favor, aguarde um momento enquanto faço a transferência.',
-  },
-  subOptions: {
-    'orçamento': [
-      { id: 'orc1', text: 'Residencial', action: 'orçamento residencial' },
-      { id: 'orc2', text: 'Comercial', action: 'orçamento comercial' },
-      { id: 'orc3', text: 'Industrial', action: 'orçamento industrial' },
-    ],
-    'energia solar': [
-      { id: 'sol1', text: 'Como funciona', action: 'funcionamento' },
-      { id: 'sol2', text: 'Tipos de painéis', action: 'tipos painéis' },
-      { id: 'sol3', text: 'Manutenção', action: 'manutenção' },
-    ],
-    'economia': [
-      { id: 'eco1', text: 'Tempo de retorno', action: 'payback' },
-      { id: 'eco2', text: 'Economia mensal', action: 'economia mensal' },
-      { id: 'eco3', text: 'Financiamento', action: 'financiamento' },
-    ],
-    'instalação': [
-      { id: 'ins1', text: 'Etapas do processo', action: 'etapas' },
-      { id: 'ins2', text: 'Tempo de instalação', action: 'tempo' },
-      { id: 'ins3', text: 'Requisitos técnicos', action: 'requisitos' },
-    ],
-  },
+const simpleResponses: { [key: string]: string } = {
+  'preco': '💰 Os valores variam conforme o tamanho do sistema:\n\n' +
+           '• Residencial (pequeno): a partir de R$ 12.000\n' +
+           '• Residencial (médio): a partir de R$ 18.000\n' +
+           '• Comercial: a partir de R$ 25.000\n\n' +
+           'Inclui equipamentos, instalação e garantia de 25 anos!',
+  
+  'funcionamento': '☀️ É simples! Os painéis solares captam a luz do sol e transformam em energia elétrica através do efeito fotovoltaico.\n\n' +
+                   'A energia gerada é distribuída para sua casa ou empresa, reduzindo drasticamente sua conta de luz.',
+  
+  'economia': '📊 Você pode economizar até 95% na sua conta de energia!\n\n' +
+              'Uma instalação residencial se paga em média em 4 a 6 anos, e os painéis duram mais de 25 anos.\n\n' +
+              'Isso significa décadas de economia! 💚',
+  
+  'tempo': '⏱️ A instalação é rápida:\n\n' +
+           '• Residencial: 2 a 3 dias\n' +
+           '• Comercial: 3 a 7 dias\n\n' +
+           'Após a instalação, em até 30 dias sua energia solar já estará funcionando!',
+  
+  'orcamento': '📝 Ótimo! Para solicitar um orçamento personalizado, você pode:\n\n' +
+               '• Acessar a aba "Orçamento" no menu\n' +
+               '• Ligar para (11) 9999-9999\n' +
+               '• Enviar e-mail para contato@solarpulse.com\n\n' +
+               'Nossa equipe responde em até 24h!',
 };
 
 export function ChatBot() {
@@ -125,37 +91,49 @@ export function ChatBot() {
     setChatEnded(true);
   };
 
-  const getBotResponse = (userMessage: string): Message => {
-    const lowercaseMessage = userMessage.toLowerCase();
+  const getBotResponse = (action: string): Message => {
+    const lowercaseAction = action.toLowerCase();
 
-    // Verificar se é uma solicitação de orçamento específico
-    if (priceRanges[lowercaseMessage as keyof typeof priceRanges]) {
-      const priceInfo = priceRanges[lowercaseMessage as keyof typeof priceRanges];
-      setTimeout(endChat, 5000); // Encerra o chat 5 segundos após mostrar os preços
+    // Verificar se é uma resposta simples
+    if (simpleResponses[lowercaseAction]) {
       return {
         id: Date.now().toString(),
-        text: priceInfo.text,
+        text: simpleResponses[lowercaseAction],
         sender: 'bot',
-        isPrice: true,
+        options: [
+          { id: 'more1', text: 'Fazer outra pergunta', action: 'voltar' },
+          { id: 'more2', text: 'Encerrar chat', action: 'encerrar' },
+        ],
       };
     }
 
-    let response = {
-      id: Date.now().toString(),
-      text: botResponses.default,
-      sender: 'bot' as const,
-      options: initialOptions,
-    };
-
-    for (const [keyword, text] of Object.entries(botResponses.keywords)) {
-      if (lowercaseMessage.includes(keyword)) {
-        response.text = text;
-        response.options = botResponses.subOptions[keyword as keyof typeof botResponses.subOptions] || initialOptions;
-        break;
-      }
+    // Voltar ao menu inicial
+    if (lowercaseAction === 'voltar') {
+      return {
+        id: Date.now().toString(),
+        text: 'Como posso ajudar você? 😊',
+        sender: 'bot',
+        options: initialOptions,
+      };
     }
 
-    return response;
+    // Encerrar chat
+    if (lowercaseAction === 'encerrar') {
+      setTimeout(endChat, 500);
+      return {
+        id: Date.now().toString(),
+        text: 'Obrigado pelo contato! Estamos à disposição sempre que precisar. Até logo! 👋',
+        sender: 'bot',
+      };
+    }
+
+    // Resposta padrão para mensagens não reconhecidas
+    return {
+      id: Date.now().toString(),
+      text: 'Desculpe, não entendi. Por favor, escolha uma das opções abaixo:',
+      sender: 'bot',
+      options: initialOptions,
+    };
   };
 
   const handleOptionSelect = (option: Option) => {
@@ -185,10 +163,27 @@ export function ChatBot() {
     };
 
     setMessages((prev) => [...prev, userMessage]);
+    const messageText = inputText;
     setInputText('');
 
     setTimeout(() => {
-      const botMessage = getBotResponse(inputText);
+      // Tenta encontrar uma palavra-chave na mensagem do usuário
+      const lowercaseInput = messageText.toLowerCase();
+      let action = 'default';
+      
+      if (lowercaseInput.includes('preço') || lowercaseInput.includes('custo') || lowercaseInput.includes('valor')) {
+        action = 'preco';
+      } else if (lowercaseInput.includes('funciona') || lowercaseInput.includes('como')) {
+        action = 'funcionamento';
+      } else if (lowercaseInput.includes('econom') || lowercaseInput.includes('economiz')) {
+        action = 'economia';
+      } else if (lowercaseInput.includes('tempo') || lowercaseInput.includes('demora') || lowercaseInput.includes('rápido')) {
+        action = 'tempo';
+      } else if (lowercaseInput.includes('orçamento') || lowercaseInput.includes('solicitar')) {
+        action = 'orcamento';
+      }
+
+      const botMessage = getBotResponse(action);
       setMessages((prev) => [...prev, botMessage]);
     }, 500);
   };
@@ -279,7 +274,7 @@ export function ChatBot() {
             style={styles.input}
             value={inputText}
             onChangeText={setInputText}
-            placeholder="Digite sua mensagem..."
+            placeholder="Digite sua dúvida ou escolha uma opção..."
             placeholderTextColor="#B8B8E6"
             onSubmitEditing={handleSend}
             editable={!chatEnded}
@@ -291,7 +286,7 @@ export function ChatBot() {
             onPress={handleSend}
             disabled={chatEnded}
           >
-            <Text style={styles.sendButtonText}>Enviar</Text>
+            <Text style={styles.sendButtonText}>📤</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -393,22 +388,27 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   optionButton: {
-    backgroundColor: 'rgba(123, 104, 238, 0.15)',
-    padding: 12,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(123, 104, 238, 0.3)',
+    backgroundColor: 'rgba(123, 104, 238, 0.2)',
+    padding: 14,
+    borderRadius: 16,
+    borderWidth: 1.5,
+    borderColor: 'rgba(123, 104, 238, 0.4)',
     ...Platform.select({
       web: {
         cursor: 'pointer',
         transition: 'all 0.3s ease',
+        ':hover': {
+          backgroundColor: 'rgba(123, 104, 238, 0.35)',
+          borderColor: '#7B68EE',
+        },
       },
     }),
   },
   optionText: {
     color: '#E6E6FA',
-    fontSize: Platform.OS === 'web' ? 14 : 13,
+    fontSize: Platform.OS === 'web' ? 15 : 14,
     textAlign: 'center',
+    fontWeight: '500',
   },
   endChatContainer: {
     marginTop: 16,

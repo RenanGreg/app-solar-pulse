@@ -476,6 +476,8 @@ export function ProductDetailsPage() {
               ))}
             </View>
           </View>
+          {/* Espaçamento extra para não sobrepor controles do celular */}
+          <View style={styles.bottomSpacer} />
         </ScrollView>
       </ParallaxScrollView>
     </Animated.View>
@@ -494,6 +496,9 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  bottomSpacer: {
+    height: Platform.OS === 'web' ? 40 : 100,
   },
   image: {
     width: '100%',
@@ -515,6 +520,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     padding: 20,
+    paddingBottom: Platform.OS === 'web' ? 20 : 40,
   },
   title: {
     fontSize: Platform.OS === 'web' ? 36 : 24,
