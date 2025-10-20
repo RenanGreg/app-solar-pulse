@@ -9,13 +9,16 @@ import {
   Alert,
   Platform,
   Animated,
+  ActivityIndicator,
 } from 'react-native';
 import { Header } from '../../components/Header';
 import { ParallaxScrollView } from '../../components/ParallaxScrollView';
 import { useScreenTransition } from '../../hooks/useScreenTransition';
+import { sendBudgetRequest } from '../../services/api';
 
 export function BudgetPage() {
   const { animatedStyle } = useScreenTransition();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -26,25 +29,49 @@ export function BudgetPage() {
     comments: '',
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!formData.name || !formData.email || !formData.phone) {
       Alert.alert('Erro', 'Por favor, preencha os campos obrigatórios.');
       return;
     }
 
-    Alert.alert(
-      'Sucesso!',
-      'Recebemos sua solicitação de orçamento. Em breve nossa equipe entrará em contato.',
-      [{ text: 'OK', onPress: () => setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        powerBill: '',
-        roofType: '',
-        comments: '',
-      }) }]
-    );
+    setLoading(true);
+
+    try {
+      await sendBudgetRequest({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        powerBill: formData.powerBill,
+        roofType: formData.roofType,
+        comments: formData.comments,
+      });
+
+      Alert.alert(
+        'Orçamento Solicitado! 🌞',
+        'Recebemos sua solicitação de orçamento. Em breve nossa equipe entrará em contato!',
+        [{ 
+          text: 'OK', 
+          onPress: () => setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            address: '',
+            powerBill: '',
+            roofType: '',
+            comments: '',
+          }) 
+        }]
+      );
+    } catch (error: any) {
+      Alert.alert(
+        'Erro ❌',
+        error?.message || 'Não foi possível enviar a solicitação. Tente novamente.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -144,8 +171,16 @@ export function BudgetPage() {
               />
             </View>
 
-            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-              <Text style={styles.submitButtonText}>Solicitar Orçamento</Text>
+            <TouchableOpacity 
+              style={[styles.submitButton, loading && styles.submitButtonDisabled]} 
+              onPress={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#2ecc71" />
+              ) : (
+                <Text style={styles.submitButtonText}>Solicitar Orçamento</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -224,6 +259,9 @@ const styles = StyleSheet.create({
     marginBottom: Platform.OS === 'web' ? 0 : 20,
     borderWidth: 1,
     borderColor: 'rgba(46, 204, 113, 0.3)',
+  },
+  submitButtonDisabled: {
+    opacity: 0.5,
   },
   submitButtonText: {
     color: '#2ecc71',

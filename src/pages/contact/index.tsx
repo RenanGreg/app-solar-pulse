@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Linking, Animated } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, Platform, Linking, Animated, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NavigationProps } from '../../types/navigation';
 import { Header } from '../../components/Header';
 import { ParallaxScrollView } from '../../components/ParallaxScrollView';
 import { useScreenTransition } from '../../hooks/useScreenTransition';
 import { LinearGradient } from 'expo-linear-gradient';
+import { sendContactMessage } from '../../services/api';
 
 export function ContactPage() {
   const navigation = useNavigation<NavigationProps>();
@@ -13,22 +14,40 @@ export function ContactPage() {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!email || !name) {
       Alert.alert('Atenção', 'Por favor, preencha seu nome e e-mail.');
       return;
     }
 
-    Alert.alert(
-      '✅ Mensagem Enviada!',
-      'Recebemos sua solicitação. Nossa equipe entrará em contato em até 24 horas.',
-      [{ text: 'OK', onPress: () => {
-        setEmail('');
-        setName('');
-        setMessage('');
-      }}]
-    );
+    setLoading(true);
+
+    try {
+      await sendContactMessage({
+        name,
+        email,
+        message: message || 'O cliente deseja mais informações sobre energia solar.',
+      });
+
+      Alert.alert(
+        '✅ Mensagem Enviada!',
+        'Recebemos sua solicitação. Nossa equipe entrará em contato em até 24 horas.',
+        [{ text: 'OK', onPress: () => {
+          setEmail('');
+          setName('');
+          setMessage('');
+        }}]
+      );
+    } catch (error: any) {
+      Alert.alert(
+        'Erro ❌',
+        error?.message || 'Não foi possível enviar a mensagem. Tente novamente.'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleCall = () => {
@@ -108,8 +127,16 @@ export function ContactPage() {
               />
             </View>
 
-            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-              <Text style={styles.submitButtonText}>Enviar Mensagem 🚀</Text>
+            <TouchableOpacity 
+              style={[styles.submitButton, loading && styles.submitButtonDisabled]} 
+              onPress={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#FFFFFF" />
+              ) : (
+                <Text style={styles.submitButtonText}>Enviar Mensagem 🚀</Text>
+              )}
             </TouchableOpacity>
           </View>
 
@@ -329,6 +356,9 @@ const styles = StyleSheet.create({
         elevation: 6,
       },
     }),
+  },
+  submitButtonDisabled: {
+    opacity: 0.5,
   },
   submitButtonText: {
     color: '#FFFFFF',
